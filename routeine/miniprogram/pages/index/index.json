@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "wt-button":"../../libs/button",
+    "wt-dialog":"../../libs/dialog"
+  }
+}

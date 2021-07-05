@@ -1,0 +1,36 @@
+/* libs/button/index.wxss */
+.wt-button {
+  margin: 0 12rpx;
+  display: inline-block;
+  border: 1px solid #333;
+color: #fff;
+  font-size: 32rpx;
+  border-radius: 10rpx;
+}
+
+.wt-button-mini {
+  font-size: 24rpx;
+  padding: 6rpx 32rpx;
+}
+
+.wt-button-small {
+  font-size: 28rpx;
+  padding: 12rpx 64rpx;
+}
+.wt-button-large {
+  font-size: 32rpx;
+  padding: 18rpx 80rpx;
+}
+/* .wt-button-default {
+  background: ;
+} */
+
+.wt-button-primary {
+  background: #22778E;
+  border: 1px solid #0B82D1;
+}
+.wt-button-info{
+  background:#FFCC02;
+  border-color: #FFCC02;
+  color: #666;
+}

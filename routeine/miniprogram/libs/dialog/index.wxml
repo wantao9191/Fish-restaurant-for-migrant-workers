@@ -1,0 +1,11 @@
+<view class="wt-dialog" wx:if='{{visible}}'>
+  <view class="wt-dialog-wrap" catchtap>
+    <view class="wt-dialog-header" wx:if="{{title}}">{{title}}</view>
+    <scroll-view scroll-y class="wt-dialog-content">
+      <slot name='content'></slot>
+    </scroll-view>
+    <view class="wt-dialog-footer">
+      <slot name='footer'></slot>
+    </view>
+  </view>
+</view>

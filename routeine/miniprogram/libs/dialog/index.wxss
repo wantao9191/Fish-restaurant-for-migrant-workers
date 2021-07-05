@@ -1,0 +1,32 @@
+/* libs/dialog/index.wxss */
+.wt-dialog{
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(0, 0, 0, .45);
+}
+.wt-dialog-wrap {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  background: #fff;
+  width: 80vw;
+  padding: 24rpx;
+  border-radius: 20rpx;
+}
+.wt-dialog-header {
+  text-align: center;
+  font-weight: bold;
+  font-size: 32rpx;
+}
+.wt-dialog-content {
+  padding: 24rpx 0;
+  max-height: 60vh;
+}
+.wt-dialog-footer {
+  padding: 24rpx 0;
+  text-align: center;
+} 

@@ -11,19 +11,36 @@ Page({
       work: '',
       avatar: ''
     },
+    avatar: '',
     userProfile: null,
-    array: ['公家的','私人的','打你妹哦,劳资是资本家'],
+    array: ['公家的', '私人的', '打你妹哦,劳资是资本家'],
   },
 
   onLoad: function () {
-    const user = wx.getStorageSync('userInfo')
+    const user = wx.getStorageSync('userInfo') || {}
     this.setData({
       info: {
         name: user.name,
         avatar: user.avatar,
       },
-      visible: true
+      visible:true
     })
+    if (user.avatar) {
+      if (user.avatar.indexOf('https://') < 0) {
+        wx.cloud.getTempFileURL({
+          fileList: [user.avatar]
+        }).then(res => {
+          this.setData({avatar:res.fileList[0].fileID})
+          console.log(res)
+        })
+      } else {
+        this.setData({
+          avatar: user.avatar
+        })
+      }
+
+    }
+
   },
   // 信息认证
   submit() {
@@ -59,12 +76,51 @@ Page({
       'info.name': e.detail.value
     })
   },
-  bindPickerChange(e){
-    this.setData({'info.work':Number(e.detail.value) })
+  bindPickerChange(e) {
+    this.setData({
+      'info.work': Number(e.detail.value)
+    })
     console.log(e)
   },
   // 选择图片
-  chooseImage(){},
+  chooseImage() {
+    wx.chooseImage({
+      count: 1,
+      sizeType: ['compressed'],
+      sourceType: ['album', 'camera'],
+      success: res=> {
+        wx.showLoading({
+          title: '上传中',
+        })
+        const filePath = res.tempFilePaths[0]
+        // 上传图片
+        const cloudPath = `avatar${filePath.match(/\.[^.]+?$/)[0]}`
+        console.log(res, cloudPath)
+        wx.cloud.uploadFile({
+          cloudPath,
+          filePath
+        }).then(res => {
+          wx.hideLoading()
+          console.log(this)
+          this.setData({
+            avatar: filePath,
+            'info.avatar': res.fileID
+          })
+          console.log(res, '1111111', this.data.avatar)
+        }).catch(e => {
+          wx.hideLoading()
+          console.error('[上传文件] 失败：', e)
+          wx.showToast({
+            icon: 'none',
+            title: '上传失败',
+          })
+        })
+      },
+      fail: e => {
+        console.error(e)
+      }
+    })
+  },
   onDialogClose() {
     this.setData({
       visible: false
@@ -104,7 +160,8 @@ Page({
             visible: true,
             userInfo: model.userInfo,
             'info.name': model.userInfo.nickName,
-            'info.avatar': model.userInfo.avatarUrl
+            'info.avatar': model.userInfo.avatarUrl,
+            avatar:model.userInfo.avatarUrl,
           })
         } else {
           wx.setStorageSync('userInfo', res.result.data)
@@ -141,54 +198,6 @@ Page({
         wx.navigateTo({
           url: '../deployFunctions/deployFunctions',
         })
-      }
-    })
-  },
-
-  // 上传图片
-  doUpload: function () {
-    // 选择图片
-    wx.chooseImage({
-      count: 1,
-      sizeType: ['compressed'],
-      sourceType: ['album', 'camera'],
-      success: function (res) {
-        wx.showLoading({
-          title: '上传中',
-        })
-
-        const filePath = res.tempFilePaths[0]
-
-        // 上传图片
-        const cloudPath = `my-image${filePath.match(/\.[^.]+?$/)[0]}`
-        wx.cloud.uploadFile({
-          cloudPath,
-          filePath,
-          success: res => {
-            console.log('[上传文件] 成功：', res)
-
-            app.globalData.fileID = res.fileID
-            app.globalData.cloudPath = cloudPath
-            app.globalData.imagePath = filePath
-
-            wx.navigateTo({
-              url: '../storageConsole/storageConsole'
-            })
-          },
-          fail: e => {
-            console.error('[上传文件] 失败：', e)
-            wx.showToast({
-              icon: 'none',
-              title: '上传失败',
-            })
-          },
-          complete: () => {
-            wx.hideLoading()
-          }
-        })
-      },
-      fail: e => {
-        console.error(e)
       }
     })
   },

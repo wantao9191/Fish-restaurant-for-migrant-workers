@@ -79,7 +79,7 @@
   <view slot='content' class="dialog-content">
     <view class="info-item avatar">
       <view>客人样貌</view>
-      <image src="{{info.avatar}}"></image>
+      <image src="{{avatar}}"></image>
       <view style="margin:12rpx 0">
         <wt-button size='mini' theme='primary' bindtap="chooseImage">选择</wt-button>
       </view>

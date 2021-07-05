@@ -35,7 +35,7 @@ exports.main = async (event, context) => {
     } else {
       return {
         code: 200,
-        data: res.data[0],
+        data: user.data[0],
         message: '查询成功'
       }
     }

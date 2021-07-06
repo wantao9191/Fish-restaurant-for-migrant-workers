@@ -3,7 +3,7 @@
   margin: 0 12rpx;
   display: inline-block;
   border: 1px solid #333;
-color: #fff;
+  color: #fff;
   font-size: 32rpx;
   border-radius: 10rpx;
 }
@@ -17,20 +17,36 @@ color: #fff;
   font-size: 28rpx;
   padding: 12rpx 64rpx;
 }
+
 .wt-button-large {
   font-size: 32rpx;
   padding: 18rpx 80rpx;
 }
-/* .wt-button-default {
-  background: ;
-} */
+
+.wt-button-round {
+  border-radius: 24rpx;
+}
+.wt-button-large.wt-button-round{
+  border-radius: 36px;
+}
+.wt-button-default {
+  color: #999;
+  border: 1px solid #888;
+}
 
 .wt-button-primary {
-  background: #22778E;
-  border: 1px solid #0B82D1;
+  background: #39A7D2;
+  border: 1px solid #39A7D2;
 }
-.wt-button-info{
-  background:#FFCC02;
-  border-color: #FFCC02;
-  color: #666;
+
+.wt-button-info {
+  background: #EFF941;
+  border-color: #EFF941;
+  color: #999;
+}
+
+.wt-button-success {
+  background: #30C9A2;
+  border-color: #30C9A2;
+  color: #fff;
 }

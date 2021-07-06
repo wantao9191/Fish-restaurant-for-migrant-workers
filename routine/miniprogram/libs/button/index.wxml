@@ -1,4 +1,4 @@
 <!--libs/button/index.wxml-->
-<text class="wt-button wt-button-{{theme}} wt-button-{{size}}">
+<text class="wt-button wt-button-{{theme}} wt-button-{{size}} wt-button-{{round?'round':'normal'}}">
   <slot></slot>
 </text>

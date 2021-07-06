@@ -14,6 +14,9 @@ Component({
     size: {
       type: String,
       value: 'small'
+    },
+    round:{
+      type:Boolean
     }
   },
 

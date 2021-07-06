@@ -1,7 +1,41 @@
 /* miniprogram/pages/home/index.wxss */
 .home {
   height: 100vh;
+  background: #F7F7F7;
 }
-.item {
-  padding: 100rpx;
+
+.header {
+  padding: 24rpx;
+}
+
+.f1 {
+  margin-bottom: 12rpx;
+}
+
+.f2 {
+  text-indent: 2em;
+  font-size: 20rpx;
+}
+
+.main {
+  padding: 24rpx;
+
+}
+
+.main-item {
+  background: #fff;
+  border-radius: 14rpx;
+  padding: 24rpx;
+  margin-bottom: 24rpx;
+  border: 1px solid #ddd;
+  text-align: right;
+}
+
+.item-header {
+  font-size: 32rpx;
+}
+
+.item-main {
+  font-size: 24rpx;
+  margin: 24rpx 0;
 }

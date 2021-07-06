@@ -1,5 +1,24 @@
 <!--miniprogram/pages/home/index.wxml-->
 <scroll-view class="home" scroll-y>
-  <view>酒馆大厅</view>
-  <view>游戏室</view>
+  <view class="header">
+    <view class="f1 serif">欢迎来到打工人摸鱼酒馆</view>
+    <view class="f2">Fish restaurant for migrant workers</view>
+  </view>
+  <view class="main">
+    <view class="main-item">
+      <view class="item-header serif">大厅</view>
+      <view class="item-main">人生本就苦短，却还要在忙碌奔波中尝尽酸甜苦辣，何不在这小小酒馆把酒言欢呢？</view>
+      <view class="item-footer">
+        <view class=''>
+          <wt-button theme='default' size='mini' round>我有话说</wt-button>
+          <wt-button theme='primary' round size='mini'>进去看看</wt-button>
+          
+        </view>
+      </view>
+    </view>
+    <view class="main-item">
+      <view class="item-header serif">游戏</view>
+      <view class="item-main">无论生活的重担怎样压迫你，闲暇之余来盘游戏总是极好的。</view>
+    </view>
+  </view>
 </scroll-view>

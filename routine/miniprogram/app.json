@@ -6,12 +6,16 @@
     "pages/im/room/room"
     
   ],
+  "usingComponents": {
+    "wt-button":"./libs/button",
+    "wt-dialog":"./libs/dialog"
+  },
   "window": {
     "backgroundColor": "#F6F6F6",
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#4AAEF7",
+    "navigationBarBackgroundColor": "#F7F7F7",
     "navigationBarTitleText": "打工人摸鱼酒馆",
-    "navigationBarTextStyle": "white"
+    "navigationBarTextStyle": "black"
   },
   "sitemapLocation": "sitemap.json",
   "style": "v2"

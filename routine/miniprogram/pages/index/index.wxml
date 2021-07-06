@@ -54,7 +54,7 @@
     </navigator>
   </view>
 </view>
-<view class="container">
+<view class="container" wx:if="{{loading}}">
   <view style="padding-top:60rpx">
     <image src="word-2.png" style="width:80vw;height:150rpx" class="word"></image>
   </view>

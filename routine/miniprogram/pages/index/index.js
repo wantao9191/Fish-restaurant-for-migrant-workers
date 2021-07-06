@@ -14,23 +14,20 @@ Page({
     avatar: '',
     userProfile: null,
     array: ['公家的', '私人的', '打你妹哦,劳资是资本家'],
+    loading:false
   },
 
   onLoad: function () {
+    
     const user = wx.getStorageSync('userInfo') || {}
-    this.setData({
-      info: {
-        name: user.name,
-        avatar: user.avatar,
-      },
-      visible:true
-    })
     if (user.avatar) {
       if (user.avatar.indexOf('https://') < 0) {
         wx.cloud.getTempFileURL({
           fileList: [user.avatar]
         }).then(res => {
-          this.setData({avatar:res.fileList[0].fileID})
+          this.setData({
+            avatar: res.fileList[0].fileID
+          })
           console.log(res)
         })
       } else {
@@ -88,7 +85,7 @@ Page({
       count: 1,
       sizeType: ['compressed'],
       sourceType: ['album', 'camera'],
-      success: res=> {
+      success: res => {
         wx.showLoading({
           title: '上传中',
         })
@@ -161,10 +158,13 @@ Page({
             userInfo: model.userInfo,
             'info.name': model.userInfo.nickName,
             'info.avatar': model.userInfo.avatarUrl,
-            avatar:model.userInfo.avatarUrl,
+            avatar: model.userInfo.avatarUrl,
           })
         } else {
           wx.setStorageSync('userInfo', res.result.data)
+          wx.reLaunch({
+            url: '../home/index',
+          })
         }
       }
     })

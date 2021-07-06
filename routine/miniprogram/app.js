@@ -13,17 +13,28 @@ App({
         traceUser: true,
       })
     }
-    if(wx.getStorageSync('userInfo')){
-      // wx.cloud.callFunction({
-      //   name: 'login',
-      //   data: {
-         
-      //   }
-      // }).then(res => {
-      //   console.log(res)
-      // })
-    }else{
-      
+    wx.showLoading({
+      title: '正在进入酒馆...',
+    })
+    let user = wx.getStorageSync('userInfo')
+    console.log(user,'----')
+    if (user) {
+      wx.cloud.callFunction({
+        name: 'login',
+        data: user
+      }).then(res => {
+        wx.hideLoading()
+        if (res.result.code === 200) {
+          if (res.result.data) {
+            wx.setStorageSync('userInfo', res.result.data)
+            wx.reLaunch({
+              url: '../home/index',
+            })
+          }
+        }
+      })
+    } else {
+      wx.hideLoading()
     }
     this.globalData = {}
   }

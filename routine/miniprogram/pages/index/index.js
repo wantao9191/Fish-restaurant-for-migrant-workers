@@ -13,8 +13,7 @@ Page({
     },
     avatar: '',
     userProfile: null,
-    array: ['公家的', '私人的', '打你妹哦,劳资是资本家'],
-    loading:false
+    array: ['公家的', '私人的', '打你妹哦,劳资是资本家']
   },
 
   onLoad: function () {

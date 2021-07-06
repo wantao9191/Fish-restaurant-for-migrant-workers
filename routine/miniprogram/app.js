@@ -17,7 +17,7 @@ App({
       title: '正在进入酒馆...',
     })
     let user = wx.getStorageSync('userInfo')
-    console.log(user,'----')
+    console.log(user, '----')
     if (user) {
       wx.cloud.callFunction({
         name: 'login',
@@ -27,14 +27,15 @@ App({
         if (res.result.code === 200) {
           if (res.result.data) {
             wx.setStorageSync('userInfo', res.result.data)
-            wx.reLaunch({
-              url: '../home/index',
-            })
+
           }
         }
       })
     } else {
       wx.hideLoading()
+      // wx.redirectTo({
+      //   url: './pages/index/index',
+      // })
     }
     this.globalData = {}
   }

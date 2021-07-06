@@ -1,2 +1,5 @@
 <!--miniprogram/pages/home/index.wxml-->
-<text>酒馆大厅</text>
+<scroll-view class="home" scroll-y>
+  <view>酒馆大厅</view>
+  <view>游戏室</view>
+</scroll-view>

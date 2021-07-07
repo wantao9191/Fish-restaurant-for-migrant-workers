@@ -8,11 +8,13 @@
     <view class="main-item">
       <view class="item-header serif">大厅</view>
       <view class="item-main">人生本就苦短，却还要在忙碌奔波中尝尽酸甜苦辣，何不在这小小酒馆把酒言欢呢？</view>
+      <view class="item-list">
+        <talk-item arrs='{{arrs}}'></talk-item>
+      </view>
       <view class="item-footer">
         <view class=''>
-          <wt-button theme='default' size='mini' round>我有话说</wt-button>
-          <wt-button theme='primary' round size='mini'>进去看看</wt-button>
-          
+          <!-- <wt-button theme='default' size='mini'>我有话说</wt-button> -->
+          <!-- <wt-button theme='primary' size='mini'>进去看看</wt-button> -->
         </view>
       </view>
     </view>

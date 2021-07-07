@@ -1,0 +1,57 @@
+/* components/talk-item/index.wxss */
+.talk-wrap {
+  text-align: left;
+  margin-bottom: 24rpx;
+  background: #F9F9F9;
+  border-radius: 10rpx;
+  padding: 24rpx;
+  border: 1px solid #ddd;
+}
+
+
+.talk-header {
+  display: flex;
+}
+
+.talk-header .name {
+  font-size: 24rpx;
+  color: #666;
+  margin-bottom: 6rpx;
+}
+
+.talk-header .time {
+  font-size: 20rpx;
+  
+  color: #999;
+}
+
+.talk-header image {
+  width: 70rpx;
+  height: 70rpx;
+  border-radius: 50%;
+}
+
+.talk-header-aside {
+  margin-left: 14rpx;
+}
+
+.talk-main {
+  font-size: 24rpx;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.talk-covers {
+  display: flex;
+  margin-top: 24rpx;
+}
+
+.talk-covers .cover-item {
+  flex: 1;
+  max-width: 33%;
+  height: 140rpx;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  margin-right: 14rpx;
+  border-radius: 10rpx;
+}

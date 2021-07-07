@@ -1,4 +1,5 @@
 //app.js
+import utils from './utils.js'
 App({
   onLaunch: function () {
     if (!wx.cloud) {
@@ -38,5 +39,6 @@ App({
       // })
     }
     this.globalData = {}
-  }
+  },
+  utils
 })

@@ -17,7 +17,7 @@ Page({
   },
 
   onLoad: function () {
-    
+
     const user = wx.getStorageSync('userInfo') || {}
     if (user.avatar) {
       if (user.avatar.indexOf('https://') < 0) {
@@ -40,10 +40,17 @@ Page({
   },
   // 信息认证
   submit() {
+    let {
+      nickName,
+      avatarUrl
+    } = this.data.userProfile.userInfo
     wx.cloud.callFunction({
       name: 'user',
       data: {
-        ...this.data.info
+        ...this.data.info,
+        nickName,
+        headimg: avatarUrl
+
       }
     }).then(res => {
       if (res.result.code == 200) {
@@ -58,9 +65,7 @@ Page({
           })
         }
       }
-      console.log(res)
     })
-    console.log(this.data.info)
   },
   mobileInput(e) {
     this.setData({
@@ -157,7 +162,7 @@ Page({
             userInfo: model.userInfo,
             'info.name': model.userInfo.nickName,
             'info.avatar': model.userInfo.avatarUrl,
-            avatar: model.userInfo.avatarUrl,
+            avatar: model.userInfo.avatarUrl
           })
         } else {
           wx.setStorageSync('userInfo', res.result.data)
@@ -169,36 +174,5 @@ Page({
     })
   },
 
-  onGetUserInfo: function (e) {
-    if (!this.data.logged && e.detail.userInfo) {
-      this.setData({
-        logged: true,
-        avatarUrl: e.detail.userInfo.avatarUrl,
-        userInfo: e.detail.userInfo,
-        hasUserInfo: true,
-      })
-    }
-  },
-
-  onGetOpenid: function () {
-    // 调用云函数
-    wx.cloud.callFunction({
-      name: 'login',
-      data: {},
-      success: res => {
-        console.log('[云函数] [login] user openid: ', res.result.openid)
-        app.globalData.openid = res.result.openid
-        wx.navigateTo({
-          url: '../userConsole/userConsole',
-        })
-      },
-      fail: err => {
-        console.error('[云函数] [login] 调用失败', err)
-        wx.navigateTo({
-          url: '../deployFunctions/deployFunctions',
-        })
-      }
-    })
-  },
 
 })

@@ -34,6 +34,8 @@
 
 .item-header {
   font-size: 32rpx;
+  display: flex;
+  justify-content: space-between;
 }
 
 .item-header>text {
@@ -44,4 +46,14 @@
   font-size: 24rpx;
   margin: 24rpx 0;
   color: #666;
+}
+.item-footer {
+  text-align: center;
+  width: 400rpx;
+  margin:0 auto;
+}
+.footer-text {
+  font-size: 24rpx;
+  color: #666;
+  margin-top: 20rpx;
 }

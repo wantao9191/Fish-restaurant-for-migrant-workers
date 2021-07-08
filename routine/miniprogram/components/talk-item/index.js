@@ -3,6 +3,10 @@ Component({
   /**
    * 组件的属性列表
    */
+  options: {
+    multipleSlots: true,
+    addGlobalClass: true
+  },
   properties: {
     arrs: {
       type: Array

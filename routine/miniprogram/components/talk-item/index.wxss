@@ -11,8 +11,19 @@
 
 .talk-header {
   display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
 }
+.icons .iconfont{
+  font-size:20rpx;
+  margin-left: 14rpx;
+  color: #666;
+  vertical-align: middle;
 
+}
+.talk-header-wrap{
+  display: flex;
+}
 .talk-header .name {
   font-size: 24rpx;
   color: #666;

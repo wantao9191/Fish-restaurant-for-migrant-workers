@@ -1,12 +1,18 @@
 <!--components/talk-item/index.wxml-->
 <view class="talk-wrap" wx:for="{{arrs}}" wx:key='_id'>
   <view class="talk-header">
-    <view class="talk-header-main">
-      <image src="{{item.avatar}}"></image>
+    <view class="talk-header-wrap">
+      <view class="talk-header-main">
+        <image src="{{item.avatar}}"></image>
+      </view>
+      <view class="talk-header-aside">
+        <view class="name">{{item.name}}</view>
+        <view class="time">{{item.timestap}}</view>
+      </view>
     </view>
-    <view class="talk-header-aside">
-      <view class="name">{{item.name}}</view>
-      <view class="time">{{item.timestap}}</view>
+    <view class="icons">
+      <text class="iconfont icon-liaotian"> {{item.discussNum}}</text>
+      <text class="iconfont icon-dianzan"> {{item.thumbsNum}}</text>
     </view>
   </view>
   <view class="talk-main">

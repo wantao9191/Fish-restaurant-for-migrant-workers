@@ -1,3 +1,7 @@
+#main {
+  height: 100vh;
+  background: #F7F7F7;
+}
 input {
   border: 1px solid #666;
 }

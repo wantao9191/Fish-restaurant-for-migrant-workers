@@ -1,8 +1,4 @@
 /* miniprogram/pages/home/index.wxss */
-.home {
-  height: 100vh;
-  background: #F7F7F7;
-}
 
 .header {
   padding: 24rpx;

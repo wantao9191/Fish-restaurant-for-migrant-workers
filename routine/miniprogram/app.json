@@ -3,12 +3,12 @@
     "pages/home/index",
     "pages/index/index",
     "pages/im/im",
-    "pages/im/room/room"
-    
+    "pages/im/room/room",
+    "pages/forum/index"
   ],
   "usingComponents": {
-    "wt-button":"./libs/button",
-    "wt-dialog":"./libs/dialog"
+    "wt-button": "./libs/button",
+    "wt-dialog": "./libs/dialog"
   },
   "window": {
     "backgroundColor": "#F6F6F6",

@@ -1,5 +1,5 @@
 <!--miniprogram/pages/home/index.wxml-->
-<scroll-view class="home" scroll-y>
+<scroll-view class="home" id="main"  scroll-y>
   <view class="header">
     <view class="f1 serif">欢迎来到打工人摸鱼酒馆</view>
     <view class="f2">Fish restaurant for migrant workers</view>
@@ -15,7 +15,7 @@
         <talk-item arrs='{{arrs}}'>
         </talk-item>
       </view>
-      <view class="item-footer">
+      <view class="item-footer" bindtap="addForum" data-type="home">
         <wt-button theme='primary' size='mini'>
           <text class="iconfont icon-bianji-2"></text>
         </wt-button>

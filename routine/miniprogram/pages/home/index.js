@@ -40,7 +40,12 @@ Page({
   onShow: function () {
 
   },
-
+  addForum(e){
+    const {type} = e.currentTarget.dataset
+    wx.navigateTo({
+      url: '../forum/index?type='+type,
+    })
+  },
   /**
    * 生命周期函数--监听页面隐藏
    */

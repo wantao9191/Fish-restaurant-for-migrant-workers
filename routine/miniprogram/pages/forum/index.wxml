@@ -1,9 +1,16 @@
 <!--miniprogram/pages/forum/index.wxml-->
-<view class="forum" id='main'>
+<view class="forum">
   <view class="wrap" style="height:{{editorHeight}}px;">
-    <input type="text" placeholder="标题（必填）"></input>
-    <editor id='editor' class="ql-container" bindready="onEditorReady" placeholder="内容"></editor>
+    <input type="text" placeholder="标题（必填）" value='{{title}}' bindinput="onInput"></input>
+    <editor id='editor' class="ql-container" bindready="onEditorReady" bindstatuschange='onStatusChange'
+      placeholder="内容"></editor>
+  </view>
+  <view class="wrap-footer" wx:if="!keyboardHeight">
+    <wt-button theme='primary' bindtap="submit">发布 <text class="iconfont icon-tiaoguo"></text></wt-button>
   </view>
 </view>
-<view class="tool-bar" hidden="{{keyboardHeight > 0 ? false : true}}" style="bottom: {{isIOS ? keyboardHeight : 0}}px">
-  1111111111</view>
+<view class="tool-bar" hidden="{{keyboardHeight > 0 ||!inputFocusing ? false : true}}"
+  style="bottom: {{isIOS ? keyboardHeight : 0}}px" catchtouchend="format">
+  <text class="iconfont icon-zhengjian" catchtouchend="insertImage"></text>
+  <text class="iconfont icon-xiangqing {{formats.bold ? 'active' : ''}}" data-name="bold"></text>
+</view>

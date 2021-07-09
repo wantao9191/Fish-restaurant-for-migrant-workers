@@ -1,5 +1,10 @@
 /* miniprogram/pages/forum/index.wxss */
-.forum {}
+.forum {
+  position: absolute; 
+  top: 0; 
+  left: 0; 
+  width: 100%;
+}
 
 .wrap {
   padding: 24rpx;
@@ -31,9 +36,25 @@ input {
   right: 100%;
   bottom: 0;
   display: flex;
+  justify-content: center;
   align-items: center;
-  justify-content: space-between;
   border: 1px solid #ECECEC;
   border-left: none;
   border-right: none;
+  background: #fff;
+}
+.tool-bar text {
+  font-size: 40rpx;
+  margin: 24rpx;
+}
+.tool-bar text.active{
+  color: #39A7D2;
+  font-weight: bold;
+}
+.wrap-footer{
+  position: absolute;
+  bottom: 100rpx;
+  left: 0;
+  width: 100vw;
+  text-align: center;
 }

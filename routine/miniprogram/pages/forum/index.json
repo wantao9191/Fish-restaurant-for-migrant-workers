@@ -1,4 +1,7 @@
 {
-  "usingComponents": {},
-  "navigationBarTitleText": "把酒言欢"
+  "usingComponents": {
+    
+  },
+  "navigationBarTitleText": "把酒言欢",
+  "disableScroll": true
 }

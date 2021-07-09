@@ -17,6 +17,12 @@
           "pathName": "pages/index/index",
           "query": "",
           "scene": null
+        },
+        {
+          "name": "pages/forum/index",
+          "pathName": "pages/forum/index",
+          "query": "type=home",
+          "scene": null
         }
       ]
     }

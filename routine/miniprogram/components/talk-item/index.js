@@ -24,6 +24,9 @@ Component({
    * 组件的方法列表
    */
   methods: {
-
+    onClick(e){
+      let id = e.currentTarget.dataset.id
+      this.triggerEvent('itemClick',id)
+    }
   }
 })

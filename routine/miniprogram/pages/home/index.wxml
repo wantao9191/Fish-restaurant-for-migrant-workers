@@ -12,7 +12,7 @@
       </view>
       <view class="item-main">人生本就苦短，却还要在忙碌奔波中尝尽酸甜苦辣，何不在这小小酒馆把酒言欢呢？</view>
       <view class="item-list">
-        <talk-item arrs='{{arrs}}'>
+        <talk-item arrs='{{arrs}}' bind:itemClick='checkDetail'>
         </talk-item>
       </view>
       <view class="item-footer" bindtap="addForum" data-type="home">

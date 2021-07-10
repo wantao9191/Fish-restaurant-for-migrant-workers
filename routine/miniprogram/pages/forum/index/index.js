@@ -10,14 +10,20 @@ Page({
     isIOS: false,
     inputFocusing: false,
     type: '',
-    title: ''
+    title: '',
+    visible: false,
+    place: {
+      home: '大厅'
+    }
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.data.type = options.type || 'home'
+    this.setData({
+      type: options.type || 'home'
+    })
     const platform = wx.getSystemInfoSync().platform
     const isIOS = platform === 'ios'
     const that = this
@@ -26,6 +32,7 @@ Page({
     })
     this.updatePosition(0)
     let keyboardHeight = 0
+    // 键盘弹出收起事件
     wx.onKeyboardHeightChange(res => {
       if (res.height === keyboardHeight) return
       const duration = res.height > 0 ? res.duration * 1000 : 0
@@ -62,6 +69,7 @@ Page({
     if (!name) return
     this.editorCtx.format(name, value)
   },
+  // 插入图片
   insertImage() {
     wx.chooseImage({
       count: 1,
@@ -99,6 +107,7 @@ Page({
     })
     this.updatePosition(500)
   },
+  // 计算高度
   updatePosition(keyboardHeight) {
     const toolbarHeight = 120
     const {
@@ -111,19 +120,48 @@ Page({
       keyboardHeight
     })
   },
-  submit() {
+  // 打开询问弹窗
+  toggleVisible() {
+    this.setData({
+      visible: !this.data.visible
+    })
+  },
+  // 发帖
+  submit(e) {
+    console.log()
+    if (!this.data.title) {
+      wx.showToast({
+        title: '标题必填',
+        icon: 'none'
+      })
+      this.toggleVisible()
+      return
+    }
     this.editorCtx.getContents().then(res => {
       let {
         delta,
         html
       } = res
+      let hasImage = false
       delta.ops = delta.ops.map(d => {
         if (d.insert.image) {
+          hasImage = true
           // html = html.replace(d.insert.image,src)
           const src = d.attributes['data-custom'].replace('id=', '')
           d.insert.image = src.replace('id=', '')
         }
         return d
+      })
+      if (!/\S/.test(res.text) && !hasImage) {
+        wx.showToast({
+          title: '帖子内容不能为空',
+          icon: 'none'
+        })
+        return
+      }
+      this.toggleVisible()
+      wx.showLoading({
+        title: '正在发帖...',
       })
       wx.cloud.callFunction({
         name: 'forum',
@@ -131,11 +169,30 @@ Page({
           action: 'add',
           type: this.data.type,
           delta,
-          title: this.data.title
+          html,
+          title: this.data.title,
+          status: Number(e.target.dataset.status)
         }
-      })
-      console.log({
-        delta
+      }).then(res => {
+        if (res.result.code === 200) {
+          if (res.result.data) {
+            wx.showToast({
+              title: res.result.message,
+              icon: 'none',
+            })
+            setTimeout(() => {
+              wx.navigateBack()
+            }, 1000);
+          } else {
+            wx.showToast({
+              title: res.result.message,
+            })
+          }
+        }
+        wx.hideLoading()
+        console.log(res)
+      }).catch(() => {
+        wx.hideLoading()
       })
     })
   },

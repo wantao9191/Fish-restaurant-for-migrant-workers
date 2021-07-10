@@ -4,7 +4,8 @@
     "pages/index/index",
     "pages/im/im",
     "pages/im/room/room",
-    "pages/forum/index"
+    "pages/forum/index/index",
+    "pages/forum/detail/detail"
   ],
   "usingComponents": {
     "wt-button": "./libs/button",

@@ -1,0 +1,11 @@
+<!--miniprogram/pages/forum/detail/index.wxml-->
+<scroll-view scroll-y class="tavern-detail" id="main">
+  <view class="tavern-detail-header">
+    <view class="tavern-detail-header-wrap">
+      <view class="aside">
+        <image src="../assets/images/tavern-log.jpg"></image>
+      </view>
+      <view class="main">酒馆大厅 - Tavern Hall</view>
+    </view>
+  </view>
+</scroll-view>

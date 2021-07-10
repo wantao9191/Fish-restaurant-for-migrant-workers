@@ -23,6 +23,18 @@
           "pathName": "pages/forum/index",
           "query": "type=home",
           "scene": null
+        },
+        {
+          "name": "pages/forum/detail/detail",
+          "pathName": "pages/forum/detail/detail",
+          "query": "id=cbddf0af60e8fd6215dcc5b56c15b108",
+          "scene": null
+        },
+        {
+          "name": "pages/forum/detail/index",
+          "pathName": "pages/forum/detail/index",
+          "query": "",
+          "scene": null
         }
       ]
     }

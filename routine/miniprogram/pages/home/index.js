@@ -108,14 +108,19 @@ Page({
     wx.navigateTo({
       url: '../forum/detail/detail?id='+e.detail,
     })
-    console.log(e)
   },
   addForum(e) {
     const {
       type
     } = e.currentTarget.dataset
     wx.navigateTo({
-      url: '../forum/index?type=' + type,
+      url: '../forum/edit/index?type=' + type,
+    })
+  },
+  // 进入大厅
+  intoView(){
+    wx.navigateTo({
+      url: '../forum/detail/index',
     })
   },
   /**

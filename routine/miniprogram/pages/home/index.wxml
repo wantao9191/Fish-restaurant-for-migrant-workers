@@ -7,7 +7,7 @@
   <view class="main">
     <view class="main-item">
       <view class="item-header serif"> 
-      <wt-button size='mini'>逛一逛</wt-button>
+      <wt-button size='mini' bindtap="intoView">逛一逛</wt-button>
       <text>大厅</text>
       </view>
       <view class="item-main">人生本就苦短，却还要在忙碌奔波中尝尽酸甜苦辣，何不在这小小酒馆把酒言欢呢？</view>

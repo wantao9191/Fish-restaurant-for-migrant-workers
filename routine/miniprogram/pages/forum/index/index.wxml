@@ -14,12 +14,15 @@
         </view>
 
       </view>
-      <view class="forum-user-main">
-
+      <view class="forum-user-main" wx:if="{{user._id===detail.user._id}}">
+        <wt-button size='mini' theme='danger' bindtap="del"><text class="iconfont icon-shanchu" style="font-size:20rpx"></text> 删除
+        </wt-button>
+        <wt-button size='mini' theme='primary' bindtap="edit"><text class="iconfont icon-bianji-1" style="font-size:20rpx"></text> 编辑
+        </wt-button>
       </view>
     </view>
     <view class="forum-main border">
-      <editor id='editor' read-only class="ql-container" bindready="onEditorReady" style="height:auto;font-size:25rpx"></editor>
+      <editor id='editor' read-only class="ql-container" bindready="onEditorReady"></editor>
       <view class="time text label">{{detail.timestmp}}</view>
     </view>
     <view class="tools border">

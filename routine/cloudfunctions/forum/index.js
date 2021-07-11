@@ -25,7 +25,7 @@ const forum = {
         title,
         openid,
         delta,
-        timestmp: db.serverDate(),
+        timestmp:new Date().getTime(),
         discussNum: 0,
         thumbsNum: 0,
         status,

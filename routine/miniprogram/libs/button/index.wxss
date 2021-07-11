@@ -6,10 +6,11 @@
   color: #fff;
   font-size: 32rpx;
   border-radius: 10rpx;
+  vertical-align: middle;
 }
 
 .wt-button-mini {
-  font-size: 24rpx;
+  font-size: 20rpx;
   padding: 6rpx 32rpx;
 }
 
@@ -26,9 +27,11 @@
 .wt-button-round {
   border-radius: 24rpx;
 }
-.wt-button-large.wt-button-round{
+
+.wt-button-large.wt-button-round {
   border-radius: 36px;
 }
+
 .wt-button-default {
   color: #333;
   border: 1px solid #888;
@@ -37,6 +40,11 @@
 .wt-button-primary {
   background: #39A7D2;
   border: 1px solid #39A7D2;
+}
+
+.wt-button-danger {
+  background: #FE6100;
+  border: 1px solid #FE6100;
 }
 
 .wt-button-info {

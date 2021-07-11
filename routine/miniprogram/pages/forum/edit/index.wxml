@@ -6,7 +6,8 @@
       placeholder="内容"></editor>
   </view>
   <view class="wrap-footer" wx:if="!keyboardHeight">
-    <wt-button theme='primary' bindtap="toggleVisible">发布 <text class="iconfont icon-tiaoguo"></text></wt-button>
+    <wt-button theme='primary' bindtap="toggleVisible" wx:if="{{!id}}">发布<text class="iconfont icon-tiaoguo"></text> </wt-button>
+    <wt-button theme='primary' bindtap="toggleVisible" wx:if="{{id}}">保存<text class="iconfont icon-tiaoguo"></text> </wt-button>
   </view>
 </view>
 <view class="tool-bar" hidden="{{keyboardHeight > 0 ||!inputFocusing ? false : true}}"
@@ -15,10 +16,11 @@
   <text class="iconfont icon-xiangqing {{formats.bold ? 'active' : ''}}" data-name="bold"></text>
 </view>
 <wt-dialog visible='{{visible}}' title='提示'>
-  <view slot='content' style="text-align:center">确认分享至{{place[type]}}吗</view>
+  <view slot='content' style="text-align:center" hidden="{{id}}">确认分享至{{place[type]}}吗</view>
+  <view slot='content' style="text-align:center" hidden="{{!id}}">确认保存内容吗？</view>
   <view slot='footer'>
     <wt-button bindtap="toggleVisible" size='mini'>取 消</wt-button>
-    <wt-button theme='success' size='mini' bindtap="submit" data-status='0'>存为草稿</wt-button>
+    <wt-button theme='success' size='mini' bindtap="submit" data-status='0' wx:if="{{!id}}">存为草稿</wt-button>
     <wt-button theme='primary' size='mini' bindtap="submit" data-status='1'>确 定</wt-button>
   </view>
 </wt-dialog>

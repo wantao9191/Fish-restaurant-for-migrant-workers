@@ -12,14 +12,15 @@ Page({
       1: '给公家打工',
       2: '给私人打工',
       3: '可恶的资本家'
-    }
+    },
+    user:app.globalData.user
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log(options)
+    console.log(app.globalData.user)
     if (!options.id) {
       wx.showToast({
         title: '未找到帖子',
@@ -65,25 +66,18 @@ Page({
           }
         })
         app.utils.getCloudFile({
-          arrs: res.result.data.delta.ops,
           fileList,
         }, 'html').then((resp) => {
-          res.result.data.delta.ops.map(o => {
-            if (o.insert.image) {
-              let item = resp.fileList.find(f => {
-                return f.fileID === o.insert.image
-              })
-              if (item) o.insert.image = item.tempFileURL
-            }
-            return o
+          let html = res.result.data.html
+          resp.fileList.forEach(f=>{
+            html = html.replace(f.fileID,f.tempFileURL)
           })
-          console.log(res.result.data)
-          res.result.data.timestmp = app.utils.formatTime(res.result.data.timestmp,'yyyy-mm-dd hh:mm',true)
+          res.result.data.timestmp = app.utils.formatTime(res.result.data.timestmp, 'yyyy-mm-dd hh:mm', true)
           this.setData({
             detail: res.result.data
           })
           this.editorCtx.setContents({
-            delta: res.result.data.delta
+            html
           })
         })
       }
@@ -95,6 +89,14 @@ Page({
     wx.createSelectorQuery().select('#editor').context(res => {
       this.editorCtx = res.context
     }).exec()
+  },
+  // 删除
+  del() {},
+  // 编辑
+  edit() {
+    wx.navigateTo({
+      url: '../edit/index?id=' + this.data.detail._id,
+    })
   },
   /**
    * 生命周期函数--监听页面隐藏

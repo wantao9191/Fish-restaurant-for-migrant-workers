@@ -4,6 +4,12 @@
   padding: 24rpx;
 }
 
+.ql-container {
+  height: auto;
+  font-size: 25rpx;
+  line-height: 32rpx;
+}
+
 .forum-header {
   font-weight: bold;
   font-size: 26rpx;
@@ -44,23 +50,28 @@
   color: #999;
   margin-top: 12rpx;
 }
-.time{
+
+.time {
   border-bottom: 1px solid #ddd;
   padding-bottom: 24rpx;
 }
+
 .time,
 .tools {
   text-align: right;
 }
-.tools{
- background: #fff;
- padding:0 24rpx 24rpx;
+
+.tools {
+  background: #fff;
+  padding: 0 24rpx 24rpx;
 }
+
 .tools .iconfont {
   display: inline-block;
   margin-left: 24rpx;
   color: #888;
 }
+
 .reverse {
   transform: rotate(180deg);
 }

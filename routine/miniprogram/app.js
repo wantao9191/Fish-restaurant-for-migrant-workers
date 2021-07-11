@@ -21,7 +21,7 @@ App({
     let user = wx.getStorageSync('userInfo')
     console.log(user, '----')
     if (user) {
-
+      this.globalData.user = user
       wx.cloud.callFunction({
         name: 'login',
         data: user

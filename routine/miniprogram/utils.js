@@ -23,11 +23,11 @@ const utils = {
   async getCloudFile({
     arrs,
     fileList
-  },type='arrs') {
+  }, type = 'arrs') {
     return await wx.cloud.getTempFileURL({
       fileList
     }).then(res => {
-      if(type =='html')return res
+      if (type == 'html') return res
       arrs.forEach(a => {
         if (a.covers.length) {
           a.covers = a.covers.map(c => {
@@ -41,6 +41,14 @@ const utils = {
       })
 
     })
+  },
+  getQueryString(url, name) {
+    const reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+    const r = url.match(reg);
+    if (r != null) {
+      return unescape(r[2]);
+    }
+    return null;
   }
 }
 export default utils

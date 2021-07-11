@@ -1,4 +1,5 @@
 // miniprogram/pages/forum/index.js
+const app = getApp()
 Page({
 
   /**
@@ -14,7 +15,8 @@ Page({
     visible: false,
     place: {
       home: '大厅'
-    }
+    },
+    id: ''
   },
 
   /**
@@ -22,8 +24,12 @@ Page({
    */
   onLoad: function (options) {
     this.setData({
-      type: options.type || 'home'
+      type: options.type || 'home',
+      id: options.id || ''
     })
+    if (options.id) {
+      this.getData()
+    }
     const platform = wx.getSystemInfoSync().platform
     const isIOS = platform === 'ios'
     const that = this
@@ -47,6 +53,42 @@ Page({
         })
       }, duration)
 
+    })
+  },
+  // 获取编辑数据
+  getData() {
+    wx.cloud.callFunction({
+      name: 'forum',
+      data: {
+        action: 'getOne',
+        id: this.data.id
+      }
+    }).then(res => {
+      if (res.result.code === 200) {
+        const fileList = res.result.data.delta.ops.filter(d => {
+          return d.insert.image
+        }).map(d => {
+          return {
+            fileID: d.insert.image,
+          }
+        })
+        app.utils.getCloudFile({
+          arrs: res.result.data.delta.ops,
+          fileList,
+        }, 'html').then((resp) => {
+          let html = res.result.data.html
+          resp.fileList.forEach(f=>{
+            html = html.replace(f.fileID,f.tempFileURL)
+          })
+          this.setData({
+            title: res.result.data.title
+          })
+          this.editorCtx.setContents({
+            html
+          })
+        })
+      }
+      console.log(res)
     })
   },
   onInput(e) {
@@ -84,7 +126,8 @@ Page({
           this.editorCtx.insertImage({
             src: res.tempFilePaths[0],
             data: {
-              id: result.fileID
+              id: result.fileID,
+              filePath
             },
             success: function () {
               console.log('insert image success')
@@ -128,7 +171,6 @@ Page({
   },
   // 发帖
   submit(e) {
-    console.log()
     if (!this.data.title) {
       wx.showToast({
         title: '标题必填',
@@ -146,9 +188,10 @@ Page({
       delta.ops = delta.ops.map(d => {
         if (d.insert.image) {
           hasImage = true
-          // html = html.replace(d.insert.image,src)
-          const src = d.attributes['data-custom'].replace('id=', '')
-          d.insert.image = src.replace('id=', '')
+          const src = app.utils.getQueryString(d.attributes['data-custom'], 'id')
+          const filePath = app.utils.getQueryString(d.attributes['data-custom'], 'filePath')
+          html = html.replace(filePath,src)
+          d.insert.image = src
         }
         return d
       })
@@ -161,12 +204,12 @@ Page({
       }
       this.toggleVisible()
       wx.showLoading({
-        title: '正在发帖...',
+        title: this.data.id ? '正在保存...' : '正在发帖...',
       })
       wx.cloud.callFunction({
         name: 'forum',
         data: {
-          action: 'add',
+          action: this.data.id ? 'update' : 'add',
           type: this.data.type,
           delta,
           html,

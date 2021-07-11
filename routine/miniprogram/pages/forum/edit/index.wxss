@@ -24,6 +24,7 @@ input {
   font-size: 16px;
   line-height: 1.5;
   overflow: auto;
+  padding-bottom: 240rpx;
 }
 
 .tool-bar {

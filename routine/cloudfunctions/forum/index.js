@@ -26,7 +26,7 @@ const forum = {
         title,
         openid,
         delta,
-        timestmp: new Date().getTime(),
+        timestmp: db.serverDate(),
         discussNum: 0,
         thumbsNum: 0,
         status,
@@ -86,8 +86,15 @@ const forum = {
       pageSize,
       pageNo
     } = event
-    console.log(event,pageNo,pageSize)
-    return await db.collection('forum').aggregate().sort({timestmp:-1}).skip(pageNo-1).limit(pageSize)
+    console.log(event, pageNo, pageSize)
+    const totalResult = await db.collection('forum').where({
+      status: _.eq(1)
+    }).count()
+    const dataResult = await db.collection('forum').aggregate().match({
+        status: _.eq(1)
+      }).sort({
+        timestmp: -1
+      }).skip(pageNo - 1).limit(pageSize)
       .lookup({
         from: 'user',
         let: {
@@ -108,13 +115,24 @@ const forum = {
       }).project({
         user: 0,
         appid: 0
-      }).end().then(res => {
-        return {
-          code: 200,
-          data: res.list,
-          message: '查询成功'
-        }
-      })
+      }).end()
+    return await Promise.all([totalResult, dataResult]).then(([tr, dr]) => {
+      console.log(tr, dr)
+      return {
+        code: 200,
+        data: {
+          datas: dr.list,
+          total: tr.total,
+          pageNo,
+          pageSize
+        },
+        message: '查询成功'
+      }
+    })
+    // then(res => {
+    //   console.log(res)
+
+    // })
   }
 }
 // 云函数入口函数

@@ -17,7 +17,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    this.getData()
   },
 
   /**
@@ -31,7 +31,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    this.getData()
+
   },
   getData() {
     wx.cloud.callFunction({
@@ -41,8 +41,9 @@ Page({
         ...this.data.params
       }
     }).then(res => {
+      console.log(res)
       if (res.result.code === 200) {
-        const arrs = res.result.data.map(a => {
+        const arrs = res.result.data.datas.map(a => {
           const covers = a.delta.ops.filter(d => {
             return d.insert.image
           }).map(d => {
@@ -65,7 +66,7 @@ Page({
           return result
         })
         this.setData({
-          arrs
+          arrs: this.data.arrs.concat(arrs)
         })
         this.setCovers(arrs)
       }
@@ -75,11 +76,11 @@ Page({
   // 设置图片
   setCovers(arrs) {
     console.log(arrs)
-    let covers = arrs.filter(a=>{
+    let covers = arrs.filter(a => {
       return a.covers.length
     })
-    let fileList = [] 
-    covers.forEach(a=>{
+    let fileList = []
+    covers.forEach(a => {
       fileList.push(...a.covers)
     })
     if (fileList.length) {
@@ -103,9 +104,9 @@ Page({
       })
     }
   },
-  checkDetail(e){
+  checkDetail(e) {
     wx.navigateTo({
-      url: '../detail/index?id='+e.detail,
+      url: '../index/index?id=' + e.detail,
     })
   },
   /**

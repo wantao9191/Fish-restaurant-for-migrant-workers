@@ -15,7 +15,7 @@ exports.main = async (event, context) => {
     openid: wxContext.OPENID,
     appid: wxContext.APPID,
     unionid: wxContext.UNIONID,
-    timestap: new Date().getTime()
+    timestap: db.serverDate()
   }
   return await db.collection('user').where({
     openid: wxContext.OPENID

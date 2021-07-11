@@ -1,5 +1,5 @@
 <!--components/talk-item/index.wxml-->
-<view class="talk-wrap" wx:for="{{arrs}}" wx:key='id' data-id='{{item.id}}' bindtap="onClick">
+<view class="talk-wrap" wx:for="{{arrs}}" wx:key='id' wx:for-index='n' data-id='{{item.id}}' bindtap="onClick">
   <view class="talk-header">
     <view class="talk-header-wrap">
       <view class="talk-header-main">
@@ -18,8 +18,9 @@
   <view class="talk-main">
     <view class="talk-main-title">{{item.title}}</view>
     <view class="talk-covers" wx:if="{{item.covers.length}}">
-      <view class="cover-item {{!cover.src?'alt' :''}}" wx:for="{{item.covers}}" wx:for-index='idx' wx:for-item='cover'
-        wx:key='idx' style="{{cover.src ? 'background-image:url('+cover.src +')' :''}} ">
+      <view class="cover-item {{!cover.src?'alt' :''}}" catchtap="previewCover" data-index='{{n}}'
+        wx:for="{{item.covers}}" wx:for-index='idx' wx:for-item='cover' wx:key='idx'
+        style="{{cover.src ? 'background-image:url('+cover.src +')' :''}} ">
       </view>
     </view>
   </view>

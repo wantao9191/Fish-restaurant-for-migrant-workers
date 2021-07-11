@@ -93,7 +93,7 @@ Page({
   // 大厅帖子详情
   checkDetail(e){
     wx.navigateTo({
-      url: '../forum/detail/index?id='+e.detail,
+      url: '../forum/index/index?id='+e.detail,
     })
   },
   addForum(e) {

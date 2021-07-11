@@ -22,6 +22,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    console.log(11111111)
     this.getData()
   },
 
@@ -83,6 +84,7 @@ Page({
           }
           return result
         })
+        console.log(arrs)
         let dataArrs = this.data.arrs.concat(arrs)
         this.setData({
           arrs: dataArrs,
@@ -102,20 +104,8 @@ Page({
       fileList.push(...a.covers)
     })
     if (fileList.length) {
-      wx.cloud.getTempFileURL({
-        fileList
-      }).then(res => {
-        this.data.arrs.forEach(a => {
-          if (a.covers.length) {
-            a.covers = a.covers.map(c => {
-              let item = res.fileList.find(f => {
-                return f.fileID === c.fileID
-              })
-              if (item) c.src = item.tempFileURL
-              return c
-            })
-          }
-        })
+      // 全局获取云文件方法
+      app.utils.getCloudFile({arrs, fileList}).then(() => {
         this.setData({
           arrs: this.data.arrs
         })
@@ -124,12 +114,14 @@ Page({
   },
   // 跳转详情
   checkDetail(e) {
+    console.log(e.detail)
     wx.navigateTo({
       url: '../index/index?id=' + e.detail,
     })
   },
   touchstart(e) {
-    if (this.data.top === 0 && this.data.transY === 0) {
+    this.data.transY = 0
+    if (this.data.top === 0 && this.data.transY <= 0) {
       this.moving = true
       const touches = e.touches[0]
       this.moveStart = touches.pageY
@@ -145,7 +137,7 @@ Page({
     }
   },
   touchend(e) {
-    if (this.moving) {
+    if (this.moving && this.data.transY) {
       this.setData({
         loading: true
       })
@@ -172,7 +164,6 @@ Page({
   scroll(e) {
     this.data.top = e.detail.scrollTop
     this.moving = false
-    console.log('scroll')
   },
   /**
    * 生命周期函数--监听页面隐藏

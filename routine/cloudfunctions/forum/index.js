@@ -43,10 +43,37 @@ const forum = {
       }
     })
   },
+  // 获取帖子详情
   async getOne(event) {
-    const {} = event
-    return await db.collection('forum')
+    const {
+      id
+    } = event
+    return await db.collection('forum').doc(id).get().then(res => {
+      if (res.data) {
+        const openid = res.data.openid
+        delete res.data.openid
+        delete res.data.appid
+        return this.getUser(openid).then(user => {
+          const userInfo = user.data[0]
+          const {openid,appid,mobile,...refer}=userInfo
+          return {
+            code: 200,
+            message: '查询成功',
+            data: {
+              ...res.data,
+              user: refer
+            }
+          }
+        })
+      }
+    })
   },
+  async getUser(openid) {
+    return await db.collection('user').where({
+      openid
+    }).get()
+  },
+  // 获取热门帖子
   async getHotList(event) {
     const {} = event
     return await db.collection('forum').aggregate().sort({
@@ -81,6 +108,7 @@ const forum = {
       }
     })
   },
+  // 获取帖子列表
   async getList(event) {
     const {
       pageSize,

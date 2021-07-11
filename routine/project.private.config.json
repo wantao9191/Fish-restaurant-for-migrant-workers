@@ -19,15 +19,9 @@
           "scene": null
         },
         {
-          "name": "pages/forum/index",
-          "pathName": "pages/forum/index",
-          "query": "type=home",
-          "scene": null
-        },
-        {
-          "name": "pages/forum/detail/detail",
-          "pathName": "pages/forum/detail/detail",
-          "query": "id=cbddf0af60e8fd6215dcc5b56c15b108",
+          "name": "pages/forum/index/index",
+          "pathName": "pages/forum/index/index",
+          "query": "id=28ee4e3e60e8fd492935f02f1de8bca1",
           "scene": null
         },
         {

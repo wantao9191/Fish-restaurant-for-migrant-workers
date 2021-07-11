@@ -19,6 +19,28 @@ const utils = {
     const m = date.getMonth() + 1
     const d = date.getDate()
     return `${y}-${m}-${d}`
+  },
+  async getCloudFile({
+    arrs,
+    fileList
+  },type='arrs') {
+    return await wx.cloud.getTempFileURL({
+      fileList
+    }).then(res => {
+      if(type =='html')return res
+      arrs.forEach(a => {
+        if (a.covers.length) {
+          a.covers = a.covers.map(c => {
+            let item = res.fileList.find(f => {
+              return f.fileID === c.fileID
+            })
+            if (item) c.src = item.tempFileURL
+            return c
+          })
+        }
+      })
+
+    })
   }
 }
 export default utils

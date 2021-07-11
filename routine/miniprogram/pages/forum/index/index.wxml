@@ -1,2 +1,33 @@
 <!--miniprogram/pages/forum/index/index.wxml-->
-<text>miniprogram/pages/forum/index/index.wxml</text>
+<scroll-view id='main' scroll-y>
+  <view class="forum-wrap" hidden="{{!detail.title}}">
+    <view class="forum-header border serif">{{detail.title}}</view>
+    <view class='forum-user border'>
+      <view class="forum-user-aside">
+        <image class="header" src="{{detail.user.avatar||detail.user.headerimg}}"></image>
+        <view>
+          <view class="text"><text>{{detail.user.name||detail.user.nickname}}</text></view>
+          <view class="text label">
+            <text>工种：{{workText[detail.user.work]}}</text>
+            <text style="margin-left:24rpx">发帖：{{detail.user.forums}}</text>
+          </view>
+        </view>
+
+      </view>
+      <view class="forum-user-main">
+
+      </view>
+    </view>
+    <view class="forum-main border">
+      <editor id='editor' read-only class="ql-container" bindready="onEditorReady" style="height:auto"></editor>
+      <view class="time text label">{{detail.timestmp}}</view>
+
+    </view>
+    <view class="tools border">
+      <text class="iconfont icon-dianzan"></text>
+      <text class="iconfont icon-dianzan reverse"></text>
+      <text class="iconfont icon-liaotian"></text>
+    </view>
+    <view class="forum-list"></view>
+  </view>
+</scroll-view>

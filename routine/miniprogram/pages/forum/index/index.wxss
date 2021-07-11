@@ -1,1 +1,66 @@
 /* miniprogram/pages/forum/index/index.wxss */
+.border {
+  border-bottom: 1px solid #ddd;
+  padding: 24rpx;
+}
+
+.forum-header {
+  font-weight: bold;
+  font-size: 26rpx;
+  line-height: 40rpx;
+  background: #fff;
+}
+
+.forum-main {
+  background: #fff;
+  border-bottom: 0;
+}
+
+.forum-user {
+  background: #fff;
+  display: flex;
+  justify-content: space-between;
+}
+
+.forum-user-aside {
+  display: flex;
+  align-items: center;
+}
+
+.header {
+  width: 70rpx;
+  height: 70rpx;
+  border-radius: 50%;
+  margin-right: 24rpx;
+}
+
+.text {
+  font-size: 24rpx;
+  color: #39A7D2;
+}
+
+.text.label {
+  font-size: 20rpx;
+  color: #999;
+  margin-top: 12rpx;
+}
+.time{
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 24rpx;
+}
+.time,
+.tools {
+  text-align: right;
+}
+.tools{
+ background: #fff;
+ padding:0 24rpx 24rpx;
+}
+.tools .iconfont {
+  display: inline-block;
+  margin-left: 24rpx;
+  color: #888;
+}
+.reverse {
+  transform: rotate(180deg);
+}

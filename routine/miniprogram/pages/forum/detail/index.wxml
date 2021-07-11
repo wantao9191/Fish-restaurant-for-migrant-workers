@@ -1,5 +1,6 @@
 <!--miniprogram/pages/forum/detail/index.wxml-->
-<scroll-view scroll-y class="tavern-detail" id="main" bindscrolltoupper='scrolltoupper' bindscrolltolower='scrolltolower' bindscroll='scroll'>
+<scroll-view scroll-y class="tavern-detail" id="main" bindscrolltoupper='scrolltoupper'
+  bindscrolltolower='scrolltolower' bindscroll='scroll'>
   <view class="tavern-detail-header">
     <view class="tavern-detail-header-wrap">
       <view class="aside">
@@ -8,8 +9,8 @@
       <view class="main">酒馆大厅 - Tavern Hall</view>
     </view>
   </view>
-  <view class="is-loading is-finsh" hidden="{{!transY}}">
-  {{loadText}} <text class="iconfont icon-zairu {{loading?'loading-ani':''}}"></text>
+  <view class="is-loading is-finsh" hidden="{{transY<=0}}">
+    {{loadText}} <text class="iconfont icon-zairu {{loading?'loading-ani':''}}"></text>
   </view>
   <view class="tavern-detail-main" style="transform:translateY({{transY}}px)" bindtouchstart="touchstart"
     bindtouchend="touchend" bindtouchmove="touchmove">

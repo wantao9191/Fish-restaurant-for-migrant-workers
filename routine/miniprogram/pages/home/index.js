@@ -67,33 +67,34 @@ Page({
           arrs
         })
         if (fileList.length) {
-          wx.cloud.getTempFileURL({
-            fileList
-          }).then(res => {
-            this.data.arrs.forEach(a => {
-              if (a.covers.length) {
-                a.covers = a.covers.map(c => {
-                  let item = res.fileList.find(f => {
-                    return f.fileID === c.fileID
-                  })
-                  if (item) c.src = item.tempFileURL
-                  return c
-                })
-              }
-            })
-            this.setData({
-              arrs: this.data.arrs
-            })
-          })
+          this.setCovers(arrs)
         }
       }
 
     })
   },
+  // 设置图片
+  setCovers(arrs) {
+    let covers = arrs.filter(a => {
+      return a.covers.length
+    })
+    let fileList = []
+    covers.forEach(a => {
+      fileList.push(...a.covers)
+    })
+    if (fileList.length) {
+      // 全局获取云文件方法
+      app.utils.getCloudFile({arrs, fileList}).then(() => {
+        this.setData({
+          arrs: this.data.arrs
+        })
+      })
+    }
+  },
   // 大厅帖子详情
-  checkDetail(e){
+  checkDetail(e) {
     wx.navigateTo({
-      url: '../forum/index/index?id='+e.detail,
+      url: '../forum/index/index?id=' + e.detail,
     })
   },
   addForum(e) {
@@ -105,7 +106,7 @@ Page({
     })
   },
   // 进入大厅
-  intoView(){
+  intoView() {
     wx.navigateTo({
       url: '../forum/detail/index',
     })

@@ -1,3 +1,6 @@
 {
-  "usingComponents": {}
+  "usingComponents": {
+    "talk-item":"/components/talk-item"
+  },
+  "navigationBarTitleText": "酒馆大厅"
 }

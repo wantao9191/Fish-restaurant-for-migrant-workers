@@ -38,3 +38,6 @@
   position: relative;
   z-index: 1;
 }
+.tavern-detail-main{
+  padding: 24rpx;
+}

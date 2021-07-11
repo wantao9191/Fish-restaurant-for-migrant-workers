@@ -8,4 +8,8 @@
       <view class="main">酒馆大厅 - Tavern Hall</view>
     </view>
   </view>
+  <view class="tavern-detail-main">
+    <talk-item arrs='{{arrs}}' bind:itemClick='checkDetail'>
+    </talk-item>
+  </view>
 </scroll-view>

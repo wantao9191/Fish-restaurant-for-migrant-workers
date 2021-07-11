@@ -2,5 +2,5 @@
   "usingComponents": {
     "talk-item":"../../components/talk-item"
   },
-  "navigationBarTitleText": "酒馆大厅"
+  "navigationBarTitleText": "吧台"
 }

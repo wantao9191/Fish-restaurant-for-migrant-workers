@@ -49,16 +49,12 @@ const forum = {
   },
   async getHotList(event) {
     const {} = event
-
     return await db.collection('forum').aggregate().sort({
       timestmp: -1,
       thumbsNum: -1,
       discussNum: -1
-    }).project({
-      appid: 0
     }).limit(3).lookup({
       from: 'user',
-      // localField: 'openid',
       let: {
         user_openid: '$openid'
       },
@@ -75,7 +71,8 @@ const forum = {
         userInfo: $.arrayElemAt(['$user', 0])
       }, '$$ROOT'])
     }).project({
-      user: 0
+      user: 0,
+      appid: 0
     }).end().then(res => {
       return {
         code: 200,
@@ -83,16 +80,54 @@ const forum = {
         message: '查询成功'
       }
     })
+  },
+  async getList(event) {
+    const {
+      pageSize,
+      pageNo
+    } = event
+    console.log(event,pageNo,pageSize)
+    return await db.collection('forum').aggregate().sort({timestmp:-1}).skip(pageNo-1).limit(pageSize)
+      .lookup({
+        from: 'user',
+        let: {
+          user_openid: '$openid'
+        },
+        pipeline: $.pipeline().match(_.expr($.eq(['$openid', '$$user_openid']))).project({
+          name: 1,
+          nickName: 1,
+          openid: 1,
+          headimg: 1,
+          avatar: 1
+        }).done(),
+        as: 'user',
+      }).replaceRoot({
+        newRoot: $.mergeObjects([{
+          userInfo: $.arrayElemAt(['$user', 0])
+        }, '$$ROOT'])
+      }).project({
+        user: 0,
+        appid: 0
+      }).end().then(res => {
+        return {
+          code: 200,
+          data: res.list,
+          message: '查询成功'
+        }
+      })
   }
 }
 // 云函数入口函数
 exports.main = async (event, context) => {
-
   const wxContext = cloud.getWXContext()
   console.log(wxContext)
   const openid = wxContext.OPENID,
     appid = wxContext.APPID,
     unionid = wxContext.UNIONID
-  return await forum[event.action](event, openid, appid, unionid)
+  const action = forum[event.action]
+  return action ? await forum[event.action](event, openid, appid, unionid) : {
+    code: 201,
+    message: '该方法未定义'
+  }
 
 }

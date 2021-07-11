@@ -10,7 +10,8 @@ Component({
   properties: {
     arrs: {
       type: Array
-    }
+    },
+    inline:{type:Boolean}
   },
 
   /**

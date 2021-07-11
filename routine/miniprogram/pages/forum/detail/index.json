@@ -1,6 +1,7 @@
 {
   "usingComponents": {
-    "talk-item":"/components/talk-item"
+    "talk-item": "/components/talk-item"
   },
-  "navigationBarTitleText": "酒馆大厅"
+  "navigationBarTitleText": "酒馆大厅",
+  "disableScroll": true
 }

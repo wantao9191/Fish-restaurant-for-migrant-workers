@@ -10,7 +10,12 @@ Page({
       pageNo: 1,
       pageSize: 5
     },
-    arrs: []
+    arrs: [],
+    isFinshed: false, //是否请求完成
+    transY: 0,
+    top: 0,
+    loading: false,
+    loadText: '松开刷新'
   },
 
   /**
@@ -33,6 +38,7 @@ Page({
   onShow: function () {
 
   },
+  // 获取数据
   getData() {
     wx.cloud.callFunction({
       name: 'forum',
@@ -41,7 +47,19 @@ Page({
         ...this.data.params
       }
     }).then(res => {
-      console.log(res)
+      if (this.moving) {
+        this.moving = false
+        this.setData({
+          loadText: '加载成功',
+          loading: false,
+        })
+        setTimeout(() => {
+          this.setData({
+            transY: 0,
+            loadText: '松开刷新'
+          })
+        }, 1000);
+      }
       if (res.result.code === 200) {
         const arrs = res.result.data.datas.map(a => {
           const covers = a.delta.ops.filter(d => {
@@ -65,17 +83,17 @@ Page({
           }
           return result
         })
+        let dataArrs = this.data.arrs.concat(arrs)
         this.setData({
-          arrs: this.data.arrs.concat(arrs)
+          arrs: dataArrs,
+          isFinshed: dataArrs.length >= res.result.data.total
         })
         this.setCovers(arrs)
       }
-      console.log(res)
     })
   },
   // 设置图片
   setCovers(arrs) {
-    console.log(arrs)
     let covers = arrs.filter(a => {
       return a.covers.length
     })
@@ -104,10 +122,57 @@ Page({
       })
     }
   },
+  // 跳转详情
   checkDetail(e) {
     wx.navigateTo({
       url: '../index/index?id=' + e.detail,
     })
+  },
+  touchstart(e) {
+    if (this.data.top === 0 && this.data.transY === 0) {
+      this.moving = true
+      const touches = e.touches[0]
+      this.moveStart = touches.pageY
+    }
+
+  },
+  touchmove(e) {
+    if (this.moving) {
+      const touches = e.touches[0]
+      this.setData({
+        transY: (touches.pageY - this.moveStart) / 5
+      })
+    }
+  },
+  touchend(e) {
+    if (this.moving) {
+      this.setData({
+        loading: true
+      })
+      this.data.params.pageNo = 1
+      this.data.arrs = []
+      this.getData()
+    }
+  },
+  // 滚动到顶部
+  scrolltoupper() {
+    setTimeout(() => {
+      this.data.top = 0
+    }, 500);
+
+  },
+  // 滚动到底部
+  scrolltolower() {
+    console.log(!this.data.isFinshed, '--------')
+    if (!this.data.isFinshed) {
+      this.data.params.pageNo += 1
+      this.getData()
+    }
+  },
+  scroll(e) {
+    this.data.top = e.detail.scrollTop
+    this.moving = false
+    console.log('scroll')
   },
   /**
    * 生命周期函数--监听页面隐藏

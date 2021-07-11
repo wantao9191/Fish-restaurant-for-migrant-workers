@@ -1,5 +1,5 @@
 <!--components/talk-item/index.wxml-->
-<view class="talk-wrap" wx:for="{{arrs}}" wx:key='id' wx:for-index='n' data-id='{{item.id}}' bindtap="onClick">
+<view class="talk-wrap {{inline?'no-border' :'has-border'}}" wx:for="{{arrs}}" wx:key='id' wx:for-index='n' data-id='{{item.id}}' bindtap="onClick">
   <view class="talk-header">
     <view class="talk-header-wrap">
       <view class="talk-header-main">

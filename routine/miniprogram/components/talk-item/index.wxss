@@ -3,12 +3,17 @@
   text-align: left;
   margin-bottom: 24rpx;
   background: #F9F9F9;
-  border-radius: 10rpx;
+  
   padding: 24rpx;
-  border: 1px solid #ddd;
+  
 }
-
-
+.talk-wrap.has-border {
+  border: 1px solid #ddd;
+  border-radius: 10rpx;
+}
+.talk-wrap.no-border{
+  border-bottom: 1px solid #ddd;
+}
 .talk-header {
   display: flex;
   justify-content: space-between;

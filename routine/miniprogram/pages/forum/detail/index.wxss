@@ -26,10 +26,12 @@
   border-radius: 50%;
   margin-left: 24rpx;
 }
+
 .main {
   padding: 24rpx;
   font-size: 26rpx;
 }
+
 .tavern-detail-header-wrap {
   display: flex;
   align-items: center;
@@ -38,6 +40,32 @@
   position: relative;
   z-index: 1;
 }
-.tavern-detail-main{
+
+.tavern-detail-main {
   padding: 24rpx;
+}
+
+.is-finsh {
+  font-size: 24rpx;
+  color: #888;
+  text-align: center;
+}
+
+.is-loading {
+  padding-top: 24rpx;
+}
+
+.is-loading .loading-ani {
+  display: inline-block;
+  animation: loading 1s linear infinite;
+}
+
+@keyframes loading {
+  0% {
+    transform: rotateZ(0deg);
+  }
+  100% {
+    /* background-color: red; */
+    transform: rotateZ(360deg);
+  }
 }

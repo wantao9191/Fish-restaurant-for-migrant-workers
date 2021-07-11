@@ -1,6 +1,5 @@
 // 云函数入口文件
 const cloud = require('wx-server-sdk')
-
 cloud.init({
   // API 调用都保持和云函数当前所在环境一致
   env: cloud.DYNAMIC_CURRENT_ENV
@@ -33,7 +32,13 @@ const forum = {
         html
       }
     }).then(res => {
-      console.log(res)
+      db.collection('user').where({
+        openid
+      }).update({
+        data: {
+          forums: _.inc(1)
+        }
+      })
       return {
         code: 200,
         message: '发布成功',
@@ -55,7 +60,12 @@ const forum = {
         delete res.data.appid
         return this.getUser(openid).then(user => {
           const userInfo = user.data[0]
-          const {openid,appid,mobile,...refer}=userInfo
+          const {
+            openid,
+            appid,
+            mobile,
+            ...refer
+          } = userInfo
           return {
             code: 200,
             message: '查询成功',

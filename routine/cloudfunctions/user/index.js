@@ -15,7 +15,8 @@ exports.main = async (event, context) => {
     openid: wxContext.OPENID,
     appid: wxContext.APPID,
     unionid: wxContext.UNIONID,
-    timestap: db.serverDate()
+    timestap: db.serverDate(),
+    forums: 0
   }
   return await db.collection('user').where({
     openid: wxContext.OPENID
@@ -25,7 +26,6 @@ exports.main = async (event, context) => {
       return db.collection('user').add({
         data
       }).then(res => {
-        console.log(res)
         return {
           data,
           code: 200,

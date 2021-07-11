@@ -19,9 +19,8 @@
       </view>
     </view>
     <view class="forum-main border">
-      <editor id='editor' read-only class="ql-container" bindready="onEditorReady" style="height:auto"></editor>
+      <editor id='editor' read-only class="ql-container" bindready="onEditorReady" style="height:auto;font-size:25rpx"></editor>
       <view class="time text label">{{detail.timestmp}}</view>
-
     </view>
     <view class="tools border">
       <text class="iconfont icon-dianzan"></text>

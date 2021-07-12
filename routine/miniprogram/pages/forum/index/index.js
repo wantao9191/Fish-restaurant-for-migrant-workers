@@ -13,7 +13,8 @@ Page({
       2: '给私人打工',
       3: '可恶的资本家'
     },
-    user:app.globalData.user
+    user: app.globalData.user,
+    visible: false
   },
 
   /**
@@ -58,6 +59,16 @@ Page({
       }
     }).then(res => {
       if (res.result.code === 200) {
+        if(res.result.data.status === 2) {
+          wx.showToast({
+            title: '该主题不存在，可能被删除或隐藏',
+            icon:'none'
+          })
+          setTimeout(() => {
+            wx.navigateBack()
+          }, 1000);
+          return
+        }
         const fileList = res.result.data.delta.ops.filter(d => {
           return d.insert.image
         }).map(d => {
@@ -69,8 +80,8 @@ Page({
           fileList,
         }, 'html').then((resp) => {
           let html = res.result.data.html
-          resp.fileList.forEach(f=>{
-            html = html.replace(f.fileID,f.tempFileURL)
+          resp.fileList.forEach(f => {
+            html = html.replace(f.fileID, f.tempFileURL)
           })
           res.result.data.timestmp = app.utils.formatTime(res.result.data.timestmp, 'yyyy-mm-dd hh:mm', true)
           this.setData({
@@ -91,7 +102,38 @@ Page({
     }).exec()
   },
   // 删除
-  del() {},
+  del() {
+    wx.showLoading({
+      title: '删除中...',
+    })
+    wx.cloud.callFunction({
+      name: 'forum',
+      data: {
+        action: 'del',
+        id: this.data.id
+      }
+    }).then(res => {
+      wx.hideLoading()
+      this.toggleDialog()
+      if (res.result.code === 200)
+        wx.nextTick(() => {
+          wx.showToast({
+            title: res.result.message,
+            icon: 'none'
+          })
+          setTimeout(() => {
+            wx.navigateBack()
+          }, 500);
+        })
+
+    })
+  },
+  // 删除确认
+  toggleDialog() {
+    this.setData({
+      visible: !this.data.visible
+    })
+  },
   // 编辑
   edit() {
     wx.navigateTo({

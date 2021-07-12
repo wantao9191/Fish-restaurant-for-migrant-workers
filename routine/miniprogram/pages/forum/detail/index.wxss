@@ -40,7 +40,7 @@
 }
 
 .tavern-detail-main {
-  padding: 24rpx;
+  /* padding: 24rpx; */
 }
 
 .is-finsh {

@@ -2,11 +2,10 @@
   "pages": [
     "pages/home/index",
     "pages/index/index",
-    "pages/im/im",
-    "pages/im/room/room",
     "pages/forum/edit/index",
     "pages/forum/detail/index",
-    "pages/forum/index/index"
+    "pages/forum/index/index",
+    "pages/forum/discuss/index"
   ],
   "usingComponents": {
     "wt-button": "./libs/button",

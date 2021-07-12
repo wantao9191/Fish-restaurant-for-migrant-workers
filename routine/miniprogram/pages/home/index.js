@@ -12,10 +12,7 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
-    let user = wx.getStorageSync('userInfo') || {}
-    this.getHot()
-  },
+  onLoad: function (options) {},
 
   /**
    * 生命周期函数--监听页面初次渲染完成
@@ -28,7 +25,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    this.getHot()
   },
   getHot() {
     wx.cloud.callFunction({
@@ -84,7 +81,10 @@ Page({
     })
     if (fileList.length) {
       // 全局获取云文件方法
-      app.utils.getCloudFile({arrs, fileList}).then(() => {
+      app.utils.getCloudFile({
+        arrs,
+        fileList
+      }).then(() => {
         this.setData({
           arrs: this.data.arrs
         })

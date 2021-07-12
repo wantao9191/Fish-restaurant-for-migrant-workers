@@ -15,9 +15,11 @@
 
       </view>
       <view class="forum-user-main" wx:if="{{user._id===detail.user._id}}">
-        <wt-button size='mini' theme='danger' bindtap="del"><text class="iconfont icon-shanchu" style="font-size:20rpx"></text> 删除
+        <wt-button size='mini' theme='danger' bindtap="toggleDialog"><text class="iconfont icon-shanchu"
+            style="font-size:20rpx"></text> 删除
         </wt-button>
-        <wt-button size='mini' theme='primary' bindtap="edit"><text class="iconfont icon-bianji-1" style="font-size:20rpx"></text> 编辑
+        <wt-button size='mini' theme='primary' bindtap="edit"><text class="iconfont icon-bianji-1"
+            style="font-size:20rpx"></text> 编辑
         </wt-button>
       </view>
     </view>
@@ -33,3 +35,11 @@
     <view class="forum-list"></view>
   </view>
 </scroll-view>
+<!-- 删除弹窗 -->
+<wt-dialog title='提示' visible='{{visible}}'>
+  <view slot='content' style="text-align:center">删除后可从个人中心恢复</view>
+  <view slot='footer'>
+    <wt-button bindtap="toggleDialog">取消</wt-button>
+    <wt-button theme='primary' bindtap="del">确定</wt-button>
+  </view>
+</wt-dialog>

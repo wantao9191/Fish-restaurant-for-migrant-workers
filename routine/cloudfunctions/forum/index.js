@@ -25,7 +25,7 @@ const forum = {
         title,
         openid,
         delta,
-        timestmp:new Date().getTime(),
+        timestmp: new Date().getTime(),
         discussNum: 0,
         thumbsNum: 0,
         status,
@@ -45,6 +45,25 @@ const forum = {
         data: {
           id: res._id
         }
+      }
+    })
+  },
+  // 删除帖子
+  async del(event, openid) {
+    return await db.collection('forum').doc(event.id).get().then(res => {
+      if (openid === res.data.openid) {
+        return Promise.resolve(db.collection('forum').where({
+          _id: event.id
+        }).update({
+          data: {
+            status: 2
+          }
+        }).then(state => {
+          return {
+            code: 200,
+            message: '删除成功！'
+          }
+        }))
       }
     })
   },
@@ -78,15 +97,11 @@ const forum = {
       }
     })
   },
-  async getUser(openid) {
-    return await db.collection('user').where({
-      openid
-    }).get()
-  },
+
   // 获取热门帖子
   async getHotList(event) {
     const {} = event
-    return await db.collection('forum').aggregate().sort({
+    return await db.collection('forum').aggregate().match({status:1}).sort({
       timestmp: -1,
       thumbsNum: -1,
       discussNum: -1
@@ -171,7 +186,13 @@ const forum = {
     //   console.log(res)
 
     // })
-  }
+  },
+  // 获取用户
+  async getUser(openid) {
+    return await db.collection('user').where({
+      openid
+    }).get()
+  },
 }
 // 云函数入口函数
 exports.main = async (event, context) => {

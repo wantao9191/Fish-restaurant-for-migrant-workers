@@ -39,7 +39,10 @@ Component({
         return a.src
       })
       wx.previewImage({
-        urls
+        urls,
+        success:()=>{
+          this.triggerEvent('previewImage')
+        }
       })
     }
   }

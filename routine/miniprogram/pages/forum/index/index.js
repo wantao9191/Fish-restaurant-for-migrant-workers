@@ -59,10 +59,10 @@ Page({
       }
     }).then(res => {
       if (res.result.code === 200) {
-        if(res.result.data.status === 2) {
+        if (res.result.data.status === 2) {
           wx.showToast({
             title: '该主题不存在，可能被删除或隐藏',
-            icon:'none'
+            icon: 'none'
           })
           setTimeout(() => {
             wx.navigateBack()
@@ -115,7 +115,8 @@ Page({
     }).then(res => {
       wx.hideLoading()
       this.toggleDialog()
-      if (res.result.code === 200)
+      if (res.result.code === 200) {
+        app.globalData.getData = true
         wx.nextTick(() => {
           wx.showToast({
             title: res.result.message,
@@ -125,6 +126,8 @@ Page({
             wx.navigateBack()
           }, 500);
         })
+      }
+
 
     })
   },
@@ -138,6 +141,12 @@ Page({
   edit() {
     wx.navigateTo({
       url: '../edit/index?id=' + this.data.detail._id,
+    })
+  },
+  // 前往聊天
+  gotoDiscuss() {
+    wx.navigateTo({
+      url: '../discuss/index?id=' + this.data.id,
     })
   },
   /**

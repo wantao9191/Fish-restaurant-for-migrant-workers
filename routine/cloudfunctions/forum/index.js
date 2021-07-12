@@ -97,7 +97,6 @@ const forum = {
       }
     })
   },
-
   // 获取热门帖子
   async getHotList(event) {
     const {} = event
@@ -197,7 +196,6 @@ const forum = {
 // 云函数入口函数
 exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext()
-  console.log(wxContext)
   const openid = wxContext.OPENID,
     appid = wxContext.APPID,
     unionid = wxContext.UNIONID

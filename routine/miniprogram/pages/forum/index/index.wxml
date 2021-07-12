@@ -30,7 +30,7 @@
     <view class="tools border">
       <text class="iconfont icon-dianzan"></text>
       <text class="iconfont icon-dianzan reverse"></text>
-      <text class="iconfont icon-liaotian"></text>
+      <text class="iconfont icon-liaotian" bindtap="gotoDiscuss"></text>
     </view>
     <view class="forum-list"></view>
   </view>

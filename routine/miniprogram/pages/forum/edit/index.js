@@ -16,7 +16,8 @@ Page({
     place: {
       home: '大厅'
     },
-    id: ''
+    id: '',
+    user: app.globalData.user
   },
 
   /**
@@ -77,8 +78,8 @@ Page({
           fileList,
         }, 'html').then((resp) => {
           let html = res.result.data.html
-          resp.fileList.forEach(f=>{
-            html = html.replace(f.fileID,f.tempFileURL)
+          resp.fileList.forEach(f => {
+            html = html.replace(f.fileID, f.tempFileURL)
           })
           this.setData({
             title: res.result.data.title
@@ -118,7 +119,7 @@ Page({
       success: res => {
         const filePath = res.tempFilePaths[0]
         // 上传图片
-        const cloudPath = `forum-${new Date().getTime()}${filePath.match(/\.[^.]+?$/)[0]}`
+        const cloudPath = `forum/${this.data.user._id}-${new Date().getTime()}${filePath.match(/\.[^.]+?$/)[0]}`
         wx.cloud.uploadFile({
           filePath,
           cloudPath
@@ -190,7 +191,7 @@ Page({
           hasImage = true
           const src = app.utils.getQueryString(d.attributes['data-custom'], 'id')
           const filePath = app.utils.getQueryString(d.attributes['data-custom'], 'filePath')
-          html = html.replace(filePath,src)
+          html = html.replace(filePath, src)
           d.insert.image = src
         }
         return d

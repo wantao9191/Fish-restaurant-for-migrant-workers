@@ -131,8 +131,10 @@ Page({
   touchmove(e) {
     if (this.moving) {
       const touches = e.touches[0]
+      const delay = touches.pageY - this.moveStart
+      if(delay<0)return
       this.setData({
-        transY: (touches.pageY - this.moveStart) / 5
+        transY: (delay) / 5
       })
     }
   },

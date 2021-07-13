@@ -83,9 +83,10 @@ Page({
           resp.fileList.forEach(f => {
             html = html.replace(f.fileID, f.tempFileURL)
           })
+          html = html.replace(/<img/g, '<img style="max-width:100%;"')
           res.result.data.timestmp = app.utils.formatTime(res.result.data.timestmp, 'yyyy-mm-dd hh:mm', true)
           this.setData({
-            detail: res.result.data
+            detail: {...res.result.data,html}
           })
           this.editorCtx.setContents({
             html

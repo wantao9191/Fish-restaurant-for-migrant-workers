@@ -11,13 +11,13 @@ Page({
     isIOS: false,
     inputFocusing: false,
     type: '',
-    title: '',
     visible: false,
     place: {
       home: '大厅'
     },
     id: '',
-    user: app.globalData.user
+    user: app.globalData.user,
+    editorContent: {}
   },
 
   /**
@@ -25,12 +25,8 @@ Page({
    */
   onLoad: function (options) {
     this.setData({
-      type: options.type || 'home',
       id: options.id || ''
     })
-    if (options.id) {
-      this.getData()
-    }
     const platform = wx.getSystemInfoSync().platform
     const isIOS = platform === 'ios'
     const that = this
@@ -54,47 +50,6 @@ Page({
         })
       }, duration)
 
-    })
-  },
-  // 获取编辑数据
-  getData() {
-    wx.cloud.callFunction({
-      name: 'forum',
-      data: {
-        action: 'getOne',
-        id: this.data.id
-      }
-    }).then(res => {
-      if (res.result.code === 200) {
-        const fileList = res.result.data.delta.ops.filter(d => {
-          return d.insert.image
-        }).map(d => {
-          return {
-            fileID: d.insert.image,
-          }
-        })
-        app.utils.getCloudFile({
-          arrs: res.result.data.delta.ops,
-          fileList,
-        }, 'html').then((resp) => {
-          let html = res.result.data.html
-          resp.fileList.forEach(f => {
-            html = html.replace(f.fileID, f.tempFileURL)
-          })
-          this.setData({
-            title: res.result.data.title
-          })
-          this.editorCtx.setContents({
-            html
-          })
-        })
-      }
-      console.log(res)
-    })
-  },
-  onInput(e) {
-    this.setData({
-      title: e.detail.value
     })
   },
   onStatusChange(e) {
@@ -135,8 +90,6 @@ Page({
             }
           })
         })
-
-        console.log(res)
       }
     })
   },
@@ -170,22 +123,13 @@ Page({
       visible: !this.data.visible
     })
   },
-  // 发帖
-  submit(e) {
-    if (!this.data.title) {
-      wx.showToast({
-        title: '标题必填',
-        icon: 'none'
-      })
-      this.toggleVisible()
-      return
-    }
+  beforeSubmit() {
     this.editorCtx.getContents().then(res => {
+      let hasImage = false
       let {
         delta,
         html
       } = res
-      let hasImage = false
       delta.ops = delta.ops.map(d => {
         if (d.insert.image) {
           hasImage = true
@@ -198,47 +142,59 @@ Page({
       })
       if (!/\S/.test(res.text) && !hasImage) {
         wx.showToast({
-          title: '帖子内容不能为空',
+          title: '评论内容不能为空',
           icon: 'none'
         })
         return
       }
+      this.data.editorContent = {
+        delta,
+        html
+      }
       this.toggleVisible()
-      wx.showLoading({
-        title: this.data.id ? '正在保存...' : '正在发帖...',
-      })
-      wx.cloud.callFunction({
-        name: 'forum',
-        data: {
-          action: this.data.id ? 'update' : 'add',
-          type: this.data.type,
-          delta,
-          html,
-          title: this.data.title,
-          status: Number(e.target.dataset.status)
-        }
-      }).then(res => {
-        if (res.result.code === 200) {
-          if (res.result.data) {
-            wx.showToast({
-              title: res.result.message,
-              icon: 'none',
-            })
-            setTimeout(() => {
-              wx.navigateBack()
-            }, 1000);
-          } else {
-            wx.showToast({
-              title: res.result.message,
-            })
-          }
-        }
-        wx.hideLoading()
-        console.log(res)
-      }).catch(() => {
-        wx.hideLoading()
-      })
     })
+  },
+  // 发帖
+  submit() {
+    let {
+      delta,
+      html
+    } = this.data.editorContent
+
+
+    wx.showLoading({
+      title: '发送评论中...',
+    })
+    wx.cloud.callFunction({
+      name: 'forum',
+      data: {
+        action: this.data.id ? 'update' : 'add',
+        type: this.data.type,
+        delta,
+        html
+      }
+    }).then(res => {
+      if (res.result.code === 200) {
+        if (res.result.data) {
+          wx.showToast({
+            title: res.result.message,
+            icon: 'none',
+          })
+          setTimeout(() => {
+            wx.navigateBack()
+          }, 1000);
+        } else {
+          wx.showToast({
+            title: res.result.message,
+          })
+        }
+      }
+      wx.hideLoading()
+      console.log(res)
+    }).catch(() => {
+      wx.hideLoading()
+    })
+
   },
   /**
    * 生命周期函数--监听页面初次渲染完成

@@ -24,7 +24,8 @@
       </view>
     </view>
     <view class="forum-main border">
-      <editor id='editor' read-only class="ql-container" bindready="onEditorReady"></editor>
+      <rich-text nodes="{{detail.html}}"></rich-text>
+      <!-- <editor id='editor' read-only class="ql-container" bindready="onEditorReady"></editor> -->
       <view class="time text label">{{detail.timestmp}}</view>
     </view>
     <view class="tools border">

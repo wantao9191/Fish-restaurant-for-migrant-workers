@@ -106,7 +106,7 @@ Page({
   },
   // 计算高度
   updatePosition(keyboardHeight) {
-    const toolbarHeight = 120
+    const toolbarHeight = 40
     const {
       windowHeight,
       platform

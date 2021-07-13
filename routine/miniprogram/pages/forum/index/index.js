@@ -88,9 +88,9 @@ Page({
           this.setData({
             detail: {...res.result.data,html}
           })
-          this.editorCtx.setContents({
-            html
-          })
+          // this.editorCtx.setContents({
+          //   html
+          // })
         })
       }
       console.log(res)

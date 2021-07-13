@@ -1,4 +1,5 @@
 {
   "usingComponents": {},
-  "navigationBarTitleText": "奇评妙论"
+  "navigationBarTitleText": "奇评妙论",
+  "disableScroll": true
 }

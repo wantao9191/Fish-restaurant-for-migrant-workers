@@ -138,7 +138,6 @@ const forum = {
       pageSize,
       pageNo
     } = event
-    console.log(event, pageNo, pageSize)
     const totalResult = await db.collection('forum').where({
       status: _.eq(1)
     }).count()

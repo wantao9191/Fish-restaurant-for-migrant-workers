@@ -14,14 +14,18 @@ Page({
       3: '可恶的资本家'
     },
     user: app.globalData.user,
-    visible: false
+    visible: false,
+    params: {
+      pageNo: 1,
+      pageSize: 10
+    },
+    arrs: []
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log(app.globalData.user)
     if (!options.id) {
       wx.showToast({
         title: '未找到帖子',
@@ -34,6 +38,7 @@ Page({
     }
     this.data.id = options.id
     this.getData()
+    this.getDiscuss()
   },
 
   /**
@@ -86,15 +91,93 @@ Page({
           html = html.replace(/<img/g, '<img style="max-width:100%;"')
           res.result.data.timestmp = app.utils.formatTime(res.result.data.timestmp, 'yyyy-mm-dd hh:mm', true)
           this.setData({
-            detail: {...res.result.data,html}
+            detail: {
+              ...res.result.data,
+              html
+            }
           })
-          // this.editorCtx.setContents({
-          //   html
-          // })
         })
       }
-      console.log(res)
     })
+  },
+  // 获取评论
+  getDiscuss() {
+    let {
+      pageNo,
+      pageSize
+    } = this.data.params
+    wx.cloud.callFunction({
+      name: 'discuss',
+      data: {
+        action: 'get',
+        pageNo,
+        pageSize,
+        id: this.data.id
+      }
+    }).then(res => {
+      if (res.result.code === 200) {
+        const arrs = res.result.data.datas.map(a => {
+          const covers = a.delta.ops.filter(d => {
+            return d.insert.image
+          }).map(d => {
+            return {
+              fileID: d.insert.image,
+              alt: '../../assets/images/default-img.jpg',
+              src: ''
+            }
+          })
+          console.log(res.result.data.datas)
+          let result = {
+            avatar: a.userInfo.headimg,
+            title: a.title,
+            name: a.userInfo.name,
+            timestmp: app.utils.formatTime(a.timestmp, 'yyyy-mm-dd', true),
+            covers,
+            id: a._id,
+            html: a.html,
+          }
+          return result
+        })
+
+        let dataArrs = this.data.arrs.concat(arrs)
+        this.setData({
+          arrs: dataArrs,
+          isFinshed: dataArrs.length >= res.result.data.total
+        })
+        this.setCovers(arrs)
+      }
+    })
+  },
+  // 设置图片
+  setCovers(arrs) {
+    let covers = arrs.filter(a => {
+      return a.covers.length
+    })
+    let fileList = []
+    covers.forEach(a => {
+      fileList.push(...a.covers)
+    })
+
+    if (fileList.length) {
+      // 全局获取云文件方法
+      app.utils.getCloudFile({
+        fileList
+      }, 'html').then((res) => {
+        if (res.fileList.length) {
+          arrs.forEach(a => {
+            res.fileList.forEach(f => {
+              a.html = a.html.replace(f.fileID, f.tempFileURL)
+            })
+            a.html = a.html.replace(/<img/g, '<img style="max-width:100%;"')
+          })
+        }
+
+        this.setData({
+          arrs: this.data.arrs
+        })
+        console.log(this.data.arrs)
+      })
+    }
   },
   // 初始化富文本编辑器
   onEditorReady() {

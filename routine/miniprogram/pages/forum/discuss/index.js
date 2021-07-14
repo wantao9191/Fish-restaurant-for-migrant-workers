@@ -74,7 +74,7 @@ Page({
       success: res => {
         const filePath = res.tempFilePaths[0]
         // 上传图片
-        const cloudPath = `forum/${this.data.user._id}-${new Date().getTime()}${filePath.match(/\.[^.]+?$/)[0]}`
+        const cloudPath = `discuss/${this.data.user._id}-${new Date().getTime()}${filePath.match(/\.[^.]+?$/)[0]}`
         wx.cloud.uploadFile({
           filePath,
           cloudPath
@@ -160,35 +160,33 @@ Page({
       delta,
       html
     } = this.data.editorContent
-
-
     wx.showLoading({
       title: '发送评论中...',
     })
     wx.cloud.callFunction({
-      name: 'forum',
+      name: 'discuss',
       data: {
-        action: this.data.id ? 'update' : 'add',
-        type: this.data.type,
+        action: 'add',
         delta,
-        html
+        html,
+        id:this.data.id
       }
     }).then(res => {
       if (res.result.code === 200) {
-        if (res.result.data) {
-          wx.showToast({
-            title: res.result.message,
-            icon: 'none',
-          })
-          setTimeout(() => {
-            wx.navigateBack()
-          }, 1000);
-        } else {
-          wx.showToast({
-            title: res.result.message,
-          })
-        }
+        wx.showToast({
+          title: res.result.message,
+          icon: 'none',
+        })
+        setTimeout(() => {
+          wx.navigateBack()
+        }, 1000);
+
+      } else {
+        wx.showToast({
+          title: res.result.message,
+        })
       }
+      this.toggleVisible()
       wx.hideLoading()
       console.log(res)
     }).catch(() => {

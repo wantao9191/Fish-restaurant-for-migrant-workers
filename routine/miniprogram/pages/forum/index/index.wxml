@@ -33,7 +33,31 @@
       <text class="iconfont icon-dianzan reverse"></text>
       <text class="iconfont icon-liaotian" bindtap="gotoDiscuss"></text>
     </view>
-    <view class="forum-list"></view>
+    <view class="forum-list">
+      <view wx:for="{{arrs}}" wx:key='id'>
+        <view class='forum-user border'>
+          <view class="forum-user-aside">
+            <image class="header" src="{{item.avatar||item.headerimg}}"></image>
+            <view>
+              <view class="text"><text>{{item.name||item.nickname}}</text></view>
+              <view class="text label">
+                <text>工种：{{workText[item.work]}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+        <view class="forum-main border">
+          <rich-text nodes="{{item.html}}"></rich-text>
+          <!-- <editor id='editor' read-only class="ql-container" bindready="onEditorReady"></editor> -->
+          <view class="time text label">{{item.timestmp}}</view>
+        </view>
+        <view class="tools border">
+          <text class="iconfont icon-dianzan"></text>
+          <text class="iconfont icon-dianzan reverse"></text>
+          <text class="iconfont icon-liaotian" bindtap="gotoDiscuss"></text>
+        </view>
+      </view>
+    </view>
   </view>
 </scroll-view>
 <!-- 删除弹窗 -->

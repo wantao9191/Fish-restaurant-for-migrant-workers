@@ -34,7 +34,7 @@
       <text class="iconfont icon-liaotian" bindtap="gotoDiscuss"></text>
     </view>
     <view class="forum-list">
-      <view wx:for="{{arrs}}" wx:key='id'>
+      <view wx:for="{{arrs}}" wx:key='id' class="forum-list-item">
         <view class='forum-user border'>
           <view class="forum-user-aside">
             <image class="header" src="{{item.avatar||item.headerimg}}"></image>
@@ -54,7 +54,7 @@
         <view class="tools border">
           <text class="iconfont icon-dianzan"></text>
           <text class="iconfont icon-dianzan reverse"></text>
-          <text class="iconfont icon-liaotian" bindtap="gotoDiscuss"></text>
+          <text class="iconfont icon-liaotian" data-id='{{item.id}}' bindtap="gotoDiscuss"></text>
         </view>
       </view>
     </view>

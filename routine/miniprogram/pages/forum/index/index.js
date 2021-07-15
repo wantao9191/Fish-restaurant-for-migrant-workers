@@ -228,9 +228,9 @@ Page({
     })
   },
   // 前往聊天
-  gotoDiscuss() {
+  gotoDiscuss(e) {
     wx.navigateTo({
-      url: '../discuss/index?id=' + this.data.id,
+      url: `../discuss/index?id=${this.data.id}&disId=${e.currentTarget.dataset.id}`,
     })
   },
   /**

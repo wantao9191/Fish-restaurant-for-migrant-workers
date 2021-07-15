@@ -75,3 +75,9 @@
 .reverse {
   transform: rotate(180deg);
 }
+
+.forum-list-item:nth-child(odd) .forum-user,
+.forum-list-item:nth-child(odd) .forum-main,
+.forum-list-item:nth-child(odd) .tools {
+  background: #f1ecec;
+}

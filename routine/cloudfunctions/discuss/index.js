@@ -43,7 +43,7 @@ const disscuss = {
     const dataResult = await db.collection('disscuss').aggregate().match({
       forum_id: _.eq(id)
       }).sort({
-        timestmp: -1
+        timestmp: 1
       }).skip(pageNo - 1).limit(pageSize)
       .lookup({
         from: 'user',

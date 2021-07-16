@@ -9,26 +9,35 @@ const db = cloud.database({
 })
 const _ = db.command
 const $ = db.command.aggregate
-const disscuss = {
+const replay = {
   async add(event, openid) {
     const {
       id,
       delta,
-      html
+      html,
+      replayId
     } = event
-    return await db.collection('disscuss').add({
-      data: {
-        forum_id: id,
-        delta,
-        html,
-        openid,
-        timestmp: new Date().getTime()
-      }
-    }).then(res => {
-      return {
-        code: 200,
-        message: '评论成功'
-      }
+    return await this.getUser(openid).then(user => {
+      const userInfo = user.data[0]
+      const {
+        name,nickName,avatar,headimg
+      } = userInfo
+      return db.collection('replay').add({
+        data: {
+          forum_id: id,
+          delta,
+          html,
+          openid,
+          replayId,
+          timestmp: new Date().getTime(),
+          user: {name,nickName,avatar,headimg}
+        }
+      }).then(res => {
+        return {
+          code: 200,
+          message: '评论成功'
+        }
+      })
     })
   },
   async get(event, openid) {
@@ -37,10 +46,10 @@ const disscuss = {
       pageNo,
       id
     } = event
-    const totalResult = await db.collection('disscuss').where({
+    const totalResult = await db.collection('replay').where({
       forum_id: _.eq(id)
     }).count()
-    const dataResult = await db.collection('disscuss').aggregate().match({
+    const dataResult = await db.collection('replay').aggregate().match({
         forum_id: _.eq(id)
       }).sort({
         timestmp: 1
@@ -66,11 +75,6 @@ const disscuss = {
       }).project({
         user: 0,
         appid: 0
-      }).lookup({
-        from: 'replay',
-        localField: '_id',
-        foreignField: 'replayId',
-        as: 'replayList',
       }).end()
     return await Promise.all([totalResult, dataResult]).then(([tr, dr]) => {
       return {
@@ -84,7 +88,13 @@ const disscuss = {
         message: '查询成功'
       }
     })
-  }
+  },
+  // 获取用户
+  async getUser(openid) {
+    return await db.collection('user').where({
+      openid
+    }).get()
+  },
 }
 // 云函数入口函数
 exports.main = async (event, context) => {
@@ -92,8 +102,8 @@ exports.main = async (event, context) => {
   const openid = wxContext.OPENID,
     appid = wxContext.APPID,
     unionid = wxContext.UNIONID
-  const action = disscuss[event.action]
-  return action ? await disscuss[event.action](event, openid, appid, unionid) : {
+  const action = replay[event.action]
+  return action ? await replay[event.action](event, openid, appid, unionid) : {
     code: 201,
     message: '该方法未定义'
   }

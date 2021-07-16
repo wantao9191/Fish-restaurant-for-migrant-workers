@@ -25,7 +25,8 @@ Page({
    */
   onLoad: function (options) {
     this.setData({
-      id: options.id || ''
+      id: options.id || '',
+      disId: options.disId
     })
     const platform = wx.getSystemInfoSync().platform
     const isIOS = platform === 'ios'
@@ -163,13 +164,15 @@ Page({
     wx.showLoading({
       title: '发送评论中...',
     })
+    const name = this.data.disId ? 'replay' :'discuss'
     wx.cloud.callFunction({
-      name: 'discuss',
+      name,
       data: {
         action: 'add',
         delta,
         html,
-        id:this.data.id
+        id: this.data.id,
+        replayId: this.data.disId
       }
     }).then(res => {
       if (res.result.code === 200) {
@@ -193,6 +196,15 @@ Page({
       wx.hideLoading()
     })
 
+  },
+  // 回复
+  submitReplay(){},
+  confirm(){
+    if(this.data.disId) {
+      this.submitReplay()
+    }else{
+      this.submit()
+    }
   },
   /**
    * 生命周期函数--监听页面初次渲染完成

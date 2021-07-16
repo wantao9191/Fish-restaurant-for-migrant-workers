@@ -17,6 +17,6 @@
   <view slot='content' style="text-align:center" hidden="{{!id}}">确认发送评论吗吗？</view>
   <view slot='footer'>
     <wt-button bindtap="toggleVisible" size='mini'>取 消</wt-button>
-    <wt-button theme='primary' size='mini' bindtap="submit" data-status='1'>确 定</wt-button>
+    <wt-button theme='primary' size='mini' bindtap="submit">确 定</wt-button>
   </view>
 </wt-dialog>

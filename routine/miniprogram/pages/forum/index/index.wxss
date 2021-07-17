@@ -75,9 +75,52 @@
 .reverse {
   transform: rotate(180deg);
 }
-
+.forum-list-item:nth-child(even){
+  background: #fff;
+}
+.forum-list-item:nth-child(odd),
 .forum-list-item:nth-child(odd) .forum-user,
 .forum-list-item:nth-child(odd) .forum-main,
-.forum-list-item:nth-child(odd) .tools {
+.forum-list-item:nth-child(odd) .tools,
+.forum-list-item:nth-child(odd) .forum-list-item {
   background: #f1ecec;
+}
+
+.replay-wrap {
+  margin:0 24rpx 24rpx;
+}
+.forum-list-item:nth-child(even) .replay-wrap .tools {
+  background: #ddd;
+  border-bottom:1px solid #888 ;
+}
+.forum-list-item:nth-child(odd) .replay-wrap .tools{
+  background: #fff;
+}
+.forum-list-item:nth-child(even) .replay-list {
+  background: #ddd;
+}
+.forum-list-item:nth-child(odd) .replay-list {
+  background: #fff;
+}
+.replay-list {
+  padding: 24rpx 24rpx 0;
+}
+.replay-list:last-child .tools {
+  border-bottom: 0 !important;
+}
+
+.forum-list-item:nth-child(even),
+.forum-list-item:nth-child(even) .forum-user,
+.forum-list-item:nth-child(even) .forum-main,
+.forum-list-item:nth-child(even) .forum-list-item {
+  background: #fff;
+}
+.replay-user-aside {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.replay-user-aside .text {
+  vertical-align: top;
 }

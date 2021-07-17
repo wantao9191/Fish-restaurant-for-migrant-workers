@@ -17,7 +17,8 @@ Page({
     },
     id: '',
     user: app.globalData.user,
-    editorContent: {}
+    editorContent: {},
+    ENV:app.globalData.ENV
   },
 
   /**
@@ -26,7 +27,9 @@ Page({
   onLoad: function (options) {
     this.setData({
       id: options.id || '',
-      disId: options.disId
+      disId: options.disId,
+      userid:options.userid,
+      name:options.name
     })
     const platform = wx.getSystemInfoSync().platform
     const isIOS = platform === 'ios'
@@ -105,6 +108,9 @@ Page({
     })
     this.updatePosition(500)
   },
+  cancel(){
+    this.editorCtx.blur()
+  },
   // 计算高度
   updatePosition(keyboardHeight) {
     const toolbarHeight = 40
@@ -165,6 +171,10 @@ Page({
       title: '发送评论中...',
     })
     const name = this.data.disId ? 'replay' :'discuss'
+    let replayInfo 
+    if(this.options.userid){
+      replayInfo = {userid:this.options.userid,name:this.options.name}
+    }
     wx.cloud.callFunction({
       name,
       data: {
@@ -172,7 +182,8 @@ Page({
         delta,
         html,
         id: this.data.id,
-        replayId: this.data.disId
+        replayId: this.data.disId,
+        replayInfo
       }
     }).then(res => {
       if (res.result.code === 200) {

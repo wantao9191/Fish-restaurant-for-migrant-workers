@@ -2,7 +2,9 @@
 import utils from './utils.js'
 App({
   onLaunch: function () {
-    this.globalData = {}
+    this.globalData = {
+      ENV: 'DEV'   //当前环境  DEV:线上    PROD:测试
+    }
     if (!wx.cloud) {
       console.error('请使用 2.2.3 或以上的基础库以使用云能力')
     } else {

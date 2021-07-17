@@ -37,14 +37,15 @@ input {
   right: 100%;
   bottom: 0;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   border: 1px solid #ECECEC;
   border-left: none;
   border-right: none;
   background: #fff;
 }
-.tool-bar text {
+
+.tool-bar .iconfont {
   font-size: 40rpx;
   margin: 24rpx;
 }

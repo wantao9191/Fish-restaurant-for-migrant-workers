@@ -56,7 +56,7 @@ const disscuss = {
           openid: 1,
           headimg: 1,
           avatar: 1,
-          work: 1
+          work: 1,_id:1
         }).done(),
         as: 'user',
       }).replaceRoot({

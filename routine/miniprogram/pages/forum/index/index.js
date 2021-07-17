@@ -116,48 +116,62 @@ Page({
       }
     }).then(res => {
       if (res.result.code === 200) {
-        const arrs = res.result.data.datas.map(a => {
-          const covers = a.delta.ops.filter(d => {
-            return d.insert.image
-          }).map(d => {
-            return {
-              fileID: d.insert.image,
-              alt: '../../assets/images/default-img.jpg',
-              src: ''
-            }
+        console.log(res.result.data)
+        let datas = res.result.data.datas
+        datas = datas.map(a => {
+          const result = this.getResult(a)
+          result.replayList = result.replayList && result.replayList.map(r => {
+            console.log(r)
+            return this.getResult(r)
           })
-          console.log(res.result.data.datas)
-          let result = {
-            avatar: a.userInfo.headimg,
-            title: a.title,
-            name: a.userInfo.name,
-            timestmp: app.utils.formatTime(a.timestmp, 'yyyy-mm-dd', true),
-            covers,
-            id: a._id,
-            html: a.html,
-          }
           return result
         })
-
-        let dataArrs = this.data.arrs.concat(arrs)
+        let dataArrs = this.data.arrs.concat(datas)
         this.setData({
           arrs: dataArrs,
           isFinshed: dataArrs.length >= res.result.data.total
         })
-        this.setCovers(arrs)
+        this.setCovers(dataArrs)
+        console.log(dataArrs)
       }
     })
   },
+  // 对数据进行操作，转换为需要的
+  getResult(data) {
+    const covers = data.delta.ops.filter(d => {
+      return d.insert.image
+    }).map(d => {
+      return {
+        fileID: d.insert.image,
+        alt: '../../assets/images/default-img.jpg',
+        src: ''
+      }
+    })
+    let userInfo = data.userInfo || data.user
+    let result = {
+      avatar: userInfo.headimg,
+      name: userInfo.name,
+      timestmp: app.utils.formatTime(data.timestmp, 'yyyy-mm-dd', true),
+      covers,
+      id: data._id,
+      html: data.html,
+      replayList: data.replayList,
+      uid: userInfo.id,
+      replayInfo:data.replayInfo
+    }
+    return result
+  },
   // 设置图片
   setCovers(arrs) {
-    let covers = arrs.filter(a => {
-      return a.covers.length
-    })
     let fileList = []
-    covers.forEach(a => {
-      fileList.push(...a.covers)
+    arrs.forEach(a => {
+      if (a.covers) fileList.push(...a.covers)
+      if (a.replayList) {
+        a.replayList.forEach(r => {
+          if (r.covers) fileList.push(...r.covers)
+        })
+      }
     })
-
     if (fileList.length) {
       // 全局获取云文件方法
       app.utils.getCloudFile({
@@ -167,6 +181,12 @@ Page({
           arrs.forEach(a => {
             res.fileList.forEach(f => {
               a.html = a.html.replace(f.fileID, f.tempFileURL)
+              if (a.replayList) {
+                a.replayList.forEach(r => {
+                  r.html = r.html.replace(f.fileID, f.tempFileURL)
+                  r.html = r.html.replace(/<img/g, '<img style="max-width:100%;"')
+                })
+              }
             })
             a.html = a.html.replace(/<img/g, '<img style="max-width:100%;"')
           })
@@ -175,7 +195,6 @@ Page({
         this.setData({
           arrs: this.data.arrs
         })
-        console.log(this.data.arrs)
       })
     }
   },
@@ -229,8 +248,13 @@ Page({
   },
   // 前往聊天
   gotoDiscuss(e) {
+    const {
+      id,
+      userid,
+      name
+    } = e.currentTarget.dataset
     wx.navigateTo({
-      url: `../discuss/index?id=${this.data.id}&disId=${e.currentTarget.dataset.id}`,
+      url: `../discuss/index?id=${this.data.id}&disId=${id}&name=${name}&userid=${userid}`,
     })
   },
   /**

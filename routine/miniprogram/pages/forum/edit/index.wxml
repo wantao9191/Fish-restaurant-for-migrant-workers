@@ -1,19 +1,33 @@
 <!--miniprogram/pages/forum/index.wxml-->
 <view class="forum">
+
   <view class="wrap" style="height:{{editorHeight}}px;">
     <input type="text" placeholder="标题（必填）" value='{{title}}' bindinput="onInput"></input>
     <editor id='editor' class="ql-container" bindready="onEditorReady" bindstatuschange='onStatusChange'
       placeholder="内容"></editor>
   </view>
-  <view class="wrap-footer" wx:if="!keyboardHeight">
-    <wt-button theme='primary' bindtap="toggleVisible" wx:if="{{!id}}">发布<text class="iconfont icon-tiaoguo"></text> </wt-button>
-    <wt-button theme='primary' bindtap="toggleVisible" wx:if="{{id}}">保存<text class="iconfont icon-tiaoguo"></text> </wt-button>
+  <view class="wrap-footer" wx:if="{{!keyboardHeight}}">
+    <wt-button theme='primary' bindtap="toggleVisible" wx:if="{{!id}}">发布<text class="iconfont icon-tiaoguo"></text>
+    </wt-button>
+    <wt-button theme='primary' bindtap="toggleVisible" wx:if="{{id}}">保存<text class="iconfont icon-tiaoguo"></text>
+    </wt-button>
   </view>
 </view>
-<view class="tool-bar" hidden="{{keyboardHeight > 0 ||!inputFocusing ? false : true}}"
+
+<view class="tool-bar" hidden="{{keyboardHeight > 0 ||inputFocusing||ENV=='PROD' ? false : true}}"
   style="bottom: {{isIOS ? keyboardHeight : 0}}px" catchtouchend="format">
-  <text class="iconfont icon-zhengjian" catchtouchend="insertImage"></text>
-  <text class="iconfont icon-xiangqing {{formats.bold ? 'active' : ''}}" data-name="bold"></text>
+  <view>
+    <wt-button size='mini' wx:if="{{id}}" bindtap="cancel">取消</wt-button>
+  </view>
+  <view>
+    <text class="iconfont icon-zhengjian" catchtouchend="insertImage"></text>
+    <text class="iconfont icon-xiangqing {{formats.bold ? 'active' : ''}}" data-name="bold"></text>
+  </view>
+  <view>
+    <wt-button theme='primary' size='mini' bindtap="toggleVisible" wx:if="{{!id}}">发布</wt-button>
+    <wt-button theme='primary' size='mini' bindtap="toggleVisible" wx:if="{{id}}">保存</wt-button>
+  </view>
+
 </view>
 <wt-dialog visible='{{visible}}' title='提示'>
   <view slot='content' style="text-align:center" hidden="{{id}}">确认分享至{{place[type]}}吗</view>

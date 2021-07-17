@@ -1,7 +1,9 @@
 <!--miniprogram/pages/forum/index/index.wxml-->
 <scroll-view id='main' scroll-y>
   <view class="forum-wrap" hidden="{{!detail.title}}">
+    <!-- 梯子标题 -->
     <view class="forum-header border serif">{{detail.title}}</view>
+    <!-- 发帖人信息 -->
     <view class='forum-user border'>
       <view class="forum-user-aside">
         <image class="header" src="{{detail.user.avatar||detail.user.headerimg}}"></image>
@@ -23,6 +25,7 @@
         </wt-button>
       </view>
     </view>
+    <!-- 帖子详情 -->
     <view class="forum-main border">
       <rich-text nodes="{{detail.html}}"></rich-text>
       <!-- <editor id='editor' read-only class="ql-container" bindready="onEditorReady"></editor> -->
@@ -33,6 +36,7 @@
       <text class="iconfont icon-dianzan reverse"></text>
       <text class="iconfont icon-liaotian" bindtap="gotoDiscuss"></text>
     </view>
+    <!-- 回复列表---直接回复帖子 -->
     <view class="forum-list">
       <view wx:for="{{arrs}}" wx:key='id' class="forum-list-item">
         <view class='forum-user border'>
@@ -51,10 +55,34 @@
           <!-- <editor id='editor' read-only class="ql-container" bindready="onEditorReady"></editor> -->
           <view class="time text label">{{item.timestmp}}</view>
         </view>
-        <view class="tools border">
+        <view class="tools border" style="border-bottom:{{item.replayList.length?'0' :''}}">
           <text class="iconfont icon-dianzan"></text>
           <text class="iconfont icon-dianzan reverse"></text>
           <text class="iconfont icon-liaotian" data-id='{{item.id}}' bindtap="gotoDiscuss"></text>
+        </view>
+        <!-- 回复列表 直接回复回帖者 -->
+        <view class="replay-wrap">
+          <view class="replay-list" wx:for="{{item.replayList}}" wx:for-item="replay" wx:key='id'>
+            <view class='replay-user'>
+              <view class="replay-user-aside">
+                <view>
+                  <image class="header" src="{{replay.avatar||replay.headerimg}}"></image>
+                  <text class="text">{{replay.name||replay.nickname}}</text>
+                  <text class="text" wx:if="{{replay.replayInfo}}" data-id="{{replay.replayInfo.userid}}">@{{replay.replayInfo.name}}</text>
+                </view>
+                <text class=" text label">{{replay.timestmp}}</text>
+              </view>
+            </view>
+            <view class="replay-main">
+              <rich-text nodes="{{replay.html}}"></rich-text>
+            </view>
+            <view class="tools">
+              <text class="iconfont icon-dianzan"></text>
+              <text class="iconfont icon-dianzan reverse"></text>
+              <text class="iconfont icon-liaotian" data-id='{{item.id}}' data-userId='{{replay.uid}}'
+                data-name='{{replay.name||replay.nickName}}' bindtap="gotoDiscuss"></text>
+            </view>
+          </view>
         </view>
       </view>
     </view>

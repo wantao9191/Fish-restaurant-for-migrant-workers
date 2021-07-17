@@ -15,12 +15,13 @@ const replay = {
       id,
       delta,
       html,
-      replayId
+      replayId,
+      replayInfo
     } = event
     return await this.getUser(openid).then(user => {
       const userInfo = user.data[0]
       const {
-        name,nickName,avatar,headimg
+        name,nickName,avatar,headimg,_id
       } = userInfo
       return db.collection('replay').add({
         data: {
@@ -30,7 +31,8 @@ const replay = {
           openid,
           replayId,
           timestmp: new Date().getTime(),
-          user: {name,nickName,avatar,headimg}
+          user: {name,nickName,avatar,headimg,id:_id},
+          replayInfo
         }
       }).then(res => {
         return {

@@ -17,7 +17,8 @@ Page({
       home: '大厅'
     },
     id: '',
-    user: app.globalData.user
+    user: app.globalData.user,
+    ENV:app.globalData.ENV
   },
 
   /**
@@ -150,6 +151,9 @@ Page({
       inputFocusing: false
     })
     this.updatePosition(500)
+  },
+  cancel(){
+    this.editorCtx.blur()
   },
   // 计算高度
   updatePosition(keyboardHeight) {

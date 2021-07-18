@@ -6,7 +6,7 @@
     <view class="forum-header border serif">{{detail.title}}</view>
     <!-- 发帖人信息 -->
     <view class='forum-user border'>
-      <view class="forum-user-aside">
+      <view class="forum-user-aside" bindtap="checkUser" data-userid="{{detail.user._id}}">
         <image class="header" src="{{detail.user.avatar||detail.user.headerimg}}"></image>
         <view>
           <view class="text"><text>{{detail.user.name||detail.user.nickname}}</text></view>

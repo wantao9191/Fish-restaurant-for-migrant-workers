@@ -382,6 +382,13 @@ Page({
       wx.hideLoading()
     })
   },
+  // 查看用户信息
+  checkUser(e){
+    let {userid} = e.target.dataset
+    wx.navigateTo({
+      url: '../../user/user?id='+userid,
+    })
+  },
   /**
    * 生命周期函数--监听页面隐藏
    */

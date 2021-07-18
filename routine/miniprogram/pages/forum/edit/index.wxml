@@ -6,7 +6,7 @@
     <editor id='editor' class="ql-container" bindready="onEditorReady" bindstatuschange='onStatusChange'
       placeholder="内容"></editor>
   </view>
-  <view class="wrap-footer" wx:if="{{!keyboardHeight}}">
+  <view class="wrap-footer" wx:if="{{!keyboardHeight&&ENV!='PROD'}}">
     <wt-button theme='primary' bindtap="toggleVisible" wx:if="{{!id}}">发布<text class="iconfont icon-tiaoguo"></text>
     </wt-button>
     <wt-button theme='primary' bindtap="toggleVisible" wx:if="{{id}}">保存<text class="iconfont icon-tiaoguo"></text>
@@ -16,6 +16,7 @@
 
 <view class="tool-bar" hidden="{{keyboardHeight > 0 ||inputFocusing||ENV=='PROD' ? false : true}}"
   style="bottom: {{isIOS ? keyboardHeight : 0}}px" catchtouchend="format">
+  <view></view>
   <view>
     <wt-button size='mini' wx:if="{{id}}" bindtap="cancel">取消</wt-button>
   </view>

@@ -49,21 +49,3 @@
   text-align: center;
 }
 
-.is-loading {
-  padding-top: 24rpx;
-}
-
-.is-loading .loading-ani {
-  display: inline-block;
-  animation: loading 1s linear infinite;
-}
-
-@keyframes loading {
-  0% {
-    transform: rotateZ(0deg);
-  }
-  100% {
-    /* background-color: red; */
-    transform: rotateZ(360deg);
-  }
-}

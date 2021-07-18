@@ -4,7 +4,7 @@
     <editor id='editor' class="ql-container" bindready="onEditorReady" bindstatuschange='onStatusChange'
       placeholder="内容"></editor>
   </view>
-  <view class="wrap-footer" wx:if="{{!keyboardHeight}}">
+  <view class="wrap-footer" wx:if="{{!keyboardHeight&&ENV!='PROD'}}">
     <wt-button theme='primary' bindtap="beforeSubmit">评论<text class="iconfont icon-tiaoguo"></text> </wt-button>
   </view>
 </view>
@@ -18,8 +18,7 @@
     <text class="iconfont icon-xiangqing {{formats.bold ? 'active' : ''}}" data-name="bold"></text>
   </view>
   <view>
-    <wt-button theme='primary' size='mini' bindtap="toggleVisible" wx:if="{{!id}}">发布 </wt-button>
-    <wt-button theme='primary' size='mini' bindtap="toggleVisible" wx:if="{{id}}">保存 </wt-button>
+    <wt-button theme='primary' size='mini' bindtap="toggleVisible" bindtap="beforeSubmit">评论 </wt-button>
   </view>
 </view>
 <wt-dialog visible='{{visible}}' title='提示'>

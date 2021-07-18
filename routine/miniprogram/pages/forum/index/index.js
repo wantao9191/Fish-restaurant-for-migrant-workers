@@ -17,9 +17,11 @@ Page({
     visible: false,
     params: {
       pageNo: 1,
-      pageSize: 10
+      pageSize: 5
     },
-    arrs: []
+    arrs: [],
+    triggered: false,
+    bottomLoading: false
   },
 
   /**
@@ -52,7 +54,52 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    // app.globalData.getData = {
+    //   id: 'cbddf0af60f04eea1710662b450bfe9f',
+    //   replayId: '28ee4e3e60f396b22b5a970b35e287bd'
+    // }
+    if (app.globalData.getData) {
+      let {
+        replayId,
+        id
+      } = app.globalData.getData
+      if (replayId) {
+        this.getReplay(replayId).then(res => {
+          app.globalData.getData = false
+          if (res) {
+            let result = this.getResult(res)
+            let index = this.data.arrs.findIndex(a => {
+              return a.id === id
+            })
+            if (this.data.arrs[index].replayList) {
+              this.data.arrs[index].replayList.unshift(result)
+            } else {
+              this.data.arrs[index].replayList = [result]
+            }
 
+            this.setData({
+              arrs: this.data.arrs
+            })
+            this.setCovers([result])
+          }
+        })
+      } else {
+        console.log(id)
+        this.getOneByDisscuss(id).then(res => {
+          app.globalData.getData = false
+          if (res) {
+            console.log(res)
+            let result = this.getResult(res)
+            this.data.arrs.unshift(result)
+            this.setData({
+              arrs: this.data.arrs
+            })
+            this.setCovers([result])
+          }
+        })
+        console.log(11234)
+      }
+    }
   },
   // 获取数据
   getData() {
@@ -116,12 +163,10 @@ Page({
       }
     }).then(res => {
       if (res.result.code === 200) {
-        console.log(res.result.data)
         let datas = res.result.data.datas
         datas = datas.map(a => {
           const result = this.getResult(a)
           result.replayList = result.replayList && result.replayList.map(r => {
-            console.log(r)
             return this.getResult(r)
           })
           return result
@@ -129,10 +174,41 @@ Page({
         let dataArrs = this.data.arrs.concat(datas)
         this.setData({
           arrs: dataArrs,
-          isFinshed: dataArrs.length >= res.result.data.total
+          isFinshed: dataArrs.length >= res.result.data.total,
+          triggered: false,
+          bottomLoading: false
         })
         this.setCovers(dataArrs)
-        console.log(dataArrs)
+      }
+    })
+  },
+  async getReplay(id) {
+    return await wx.cloud.callFunction({
+      name: 'replay',
+      data: {
+        action: 'getone',
+        id
+      }
+    }).then(res => {
+      if (res.result.code === 200) {
+        return res.result.data
+      } else {
+        return null
+      }
+    })
+  },
+  async getOneByDisscuss(id) {
+    return await wx.cloud.callFunction({
+      name: 'discuss',
+      data: {
+        action: 'getone',
+        id
+      }
+    }).then(res => {
+      if (res.result.code === 200) {
+        return res.result.data
+      } else {
+        return null
       }
     })
   },
@@ -151,13 +227,15 @@ Page({
     let result = {
       avatar: userInfo.headimg,
       name: userInfo.name,
+      work: userInfo.work,
       timestmp: app.utils.formatTime(data.timestmp, 'yyyy-mm-dd', true),
       covers,
       id: data._id,
       html: data.html,
       replayList: data.replayList,
       uid: userInfo.id,
-      replayInfo:data.replayInfo
+      replayInfo: data.replayInfo,
+      replayNumber: data.replayNumber
     }
     return result
   },
@@ -248,13 +326,60 @@ Page({
   },
   // 前往聊天
   gotoDiscuss(e) {
+    console.log(e.currentTarget.dataset)
     const {
       id,
       userid,
       name
     } = e.currentTarget.dataset
+    let url = `../discuss/index?id=${this.data.id}`
+    if (id) url += `&disId=${id}`
+    if (name) url += `&name=${name}`
+    if (userid) url += `&userid=${userid}`
     wx.navigateTo({
-      url: `../discuss/index?id=${this.data.id}&disId=${id}&name=${name}&userid=${userid}`,
+      url,
+    })
+  },
+  // 获取跟多聊天
+  getMore(e) {
+    wx.showLoading({
+      title: 'loading...',
+    })
+    let {
+      index
+    } = e.target.dataset
+    let item = this.data.arrs[index]
+    if (item.isFinshed) return
+    wx.cloud.callFunction({
+      name: 'replay',
+      data: {
+        action: 'get',
+        id: item.id,
+        pageNo: item.replayList.length,
+        pageSize: 5
+      }
+    }).then(res => {
+      wx.hideLoading()
+      if (res.result.code === 200) {
+        let datas = res.result.data.datas
+        datas = datas.map(a => {
+          const result = this.getResult(a)
+          return result
+        })
+        let dataArrs = item.replayList.concat(datas)
+        if (dataArrs.length >= item.replayNumber) {
+          item.isFinshed = true
+        }
+        let key = `arrs[${index}].replayList`
+        let key2 = `arrs[${index}].isFinshed`
+        this.setData({
+          [key]: dataArrs,
+          [key2]: item.isFinshed
+        })
+        this.setCovers(dataArrs)
+      }
+    }).catch(() => {
+      wx.hideLoading()
     })
   },
   /**
@@ -274,15 +399,28 @@ Page({
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
-  onPullDownRefresh: function () {
-
+  onPullDownRefresh: function (e) {
+    if (!this.data.triggered) {
+      console.log(e)
+      this.data.params.pageNo=1
+      this.setData({
+        arrs: []
+      })
+      this.getDiscuss()
+    }
   },
 
   /**
    * 页面上拉触底事件的处理函数
    */
-  onReachBottom: function () {
-
+  onReachBottom: function (e) {
+    
+    if (this.data.isFinshed || this.data.bottomLoading) return
+    this.data.params.pageNo += 1
+    this.getDiscuss()
+    this.setData({
+      bottomLoading: true
+    })
   },
 
   /**

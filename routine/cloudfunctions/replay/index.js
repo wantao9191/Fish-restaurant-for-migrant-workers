@@ -21,7 +21,11 @@ const replay = {
     return await this.getUser(openid).then(user => {
       const userInfo = user.data[0]
       const {
-        name,nickName,avatar,headimg,_id
+        name,
+        nickName,
+        avatar,
+        headimg,
+        _id
       } = userInfo
       return db.collection('replay').add({
         data: {
@@ -31,12 +35,29 @@ const replay = {
           openid,
           replayId,
           timestmp: new Date().getTime(),
-          user: {name,nickName,avatar,headimg,id:_id},
+          user: {
+            name,
+            nickName,
+            avatar,
+            headimg,
+            id: _id
+          },
           replayInfo
         }
       }).then(res => {
+        db.collection('disscuss').where({
+          _id: replayId
+        }).update({
+          data: {
+            replayNumber: _.inc(1)
+          }
+
+        })
         return {
           code: 200,
+          data: {
+            id: res._id
+          },
           message: '评论成功'
         }
       })
@@ -46,38 +67,41 @@ const replay = {
     const {
       pageSize,
       pageNo,
-      id
+      id,
+      sortByTime
     } = event
+    let sortType = sortByTime || -1
     const totalResult = await db.collection('replay').where({
-      forum_id: _.eq(id)
+      replayId: _.eq(id)
     }).count()
-    const dataResult = await db.collection('replay').aggregate().match({
-        forum_id: _.eq(id)
-      }).sort({
-        timestmp: 1
-      }).skip(pageNo - 1).limit(pageSize)
-      .lookup({
-        from: 'user',
-        let: {
-          user_openid: '$openid'
-        },
-        pipeline: $.pipeline().match(_.expr($.eq(['$openid', '$$user_openid']))).project({
-          name: 1,
-          nickName: 1,
-          openid: 1,
-          headimg: 1,
-          avatar: 1,
-          work: 1
-        }).done(),
-        as: 'user',
-      }).replaceRoot({
-        newRoot: $.mergeObjects([{
-          userInfo: $.arrayElemAt(['$user', 0])
-        }, '$$ROOT'])
-      }).project({
-        user: 0,
-        appid: 0
-      }).end()
+    let dataResult = await db.collection('replay').aggregate().match({
+      replayId: _.eq(id)
+    }).sort({
+      timestmp: sortType
+    })
+    dataResult = dataResult.skip(pageNo).limit(pageSize)
+    dataResult = dataResult.lookup({
+      from: 'user',
+      let: {
+        user_openid: '$openid'
+      },
+      pipeline: $.pipeline().match(_.expr($.eq(['$openid', '$$user_openid']))).project({
+        name: 1,
+        nickName: 1,
+        openid: 1,
+        headimg: 1,
+        avatar: 1,
+        work: 1
+      }).done(),
+      as: 'user',
+    }).replaceRoot({
+      newRoot: $.mergeObjects([{
+        userInfo: $.arrayElemAt(['$user', 0])
+      }, '$$ROOT'])
+    }).project({
+      user: 0,
+      appid: 0
+    }).end()
     return await Promise.all([totalResult, dataResult]).then(([tr, dr]) => {
       return {
         code: 200,
@@ -85,9 +109,45 @@ const replay = {
           datas: dr.list,
           total: tr.total,
           pageNo,
-          pageSize
+          pageSize,
+          sortType
         },
         message: '查询成功'
+      }
+    })
+  },
+  async getone(event, openid) {
+    const {
+      id
+    } = event
+    return await db.collection('replay').aggregate().match({
+      _id: _.eq(id)
+    }).lookup({
+      from: 'user',
+      let: {
+        user_openid: '$openid'
+      },
+      pipeline: $.pipeline().match(_.expr($.eq(['$openid', '$$user_openid']))).project({
+        name: 1,
+        nickName: 1,
+        openid: 1,
+        headimg: 1,
+        avatar: 1,
+        work: 1
+      }).done(),
+      as: 'user',
+    }).replaceRoot({
+      newRoot: $.mergeObjects([{
+        userInfo: $.arrayElemAt(['$user', 0])
+      }, '$$ROOT'])
+    }).project({
+      user: 0,
+      appid: 0
+    }).end().then(res => {
+      return {
+        code: 200,
+        messages: '查询成功',
+        data: res.list[0]
       }
     })
   },

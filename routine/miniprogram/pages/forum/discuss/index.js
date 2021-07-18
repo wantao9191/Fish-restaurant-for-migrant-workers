@@ -18,18 +18,19 @@ Page({
     id: '',
     user: app.globalData.user,
     editorContent: {},
-    ENV:app.globalData.ENV
+    ENV: app.globalData.ENV
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    console.log(options)
     this.setData({
       id: options.id || '',
       disId: options.disId,
-      userid:options.userid,
-      name:options.name
+      userid: options.userid,
+      name: options.name
     })
     const platform = wx.getSystemInfoSync().platform
     const isIOS = platform === 'ios'
@@ -108,7 +109,7 @@ Page({
     })
     this.updatePosition(500)
   },
-  cancel(){
+  cancel() {
     this.editorCtx.blur()
   },
   // 计算高度
@@ -170,10 +171,13 @@ Page({
     wx.showLoading({
       title: '发送评论中...',
     })
-    const name = this.data.disId ? 'replay' :'discuss'
-    let replayInfo 
-    if(this.options.userid){
-      replayInfo = {userid:this.options.userid,name:this.options.name}
+    const name = this.data.disId ? 'replay' : 'discuss'
+    let replayInfo
+    if (this.options.userid) {
+      replayInfo = {
+        userid: this.options.userid,
+        name: this.options.name
+      }
     }
     wx.cloud.callFunction({
       name,
@@ -191,6 +195,11 @@ Page({
           title: res.result.message,
           icon: 'none',
         })
+        let replayId=this.data.disId? res.result.data.id :''
+        app.globalData.getData = {
+          replayId,
+          id: this.data.disId ?this.data.disId :res.result.data.id
+        }
         setTimeout(() => {
           wx.navigateBack()
         }, 1000);
@@ -202,18 +211,17 @@ Page({
       }
       this.toggleVisible()
       wx.hideLoading()
-      console.log(res)
     }).catch(() => {
       wx.hideLoading()
     })
 
   },
   // 回复
-  submitReplay(){},
-  confirm(){
-    if(this.data.disId) {
+  submitReplay() {},
+  confirm() {
+    if (this.data.disId) {
       this.submitReplay()
-    }else{
+    } else {
       this.submit()
     }
   },

@@ -1,5 +1,6 @@
 <!--miniprogram/pages/forum/index/index.wxml-->
-<scroll-view id='main' scroll-y>
+<scroll-view id='main' scroll-y refresher-enabled bindrefresherrefresh='onPullDownRefresh'
+  refresher-triggered='{{triggered}}' bindscrolltolower='onReachBottom'>
   <view class="forum-wrap" hidden="{{!detail.title}}">
     <!-- 梯子标题 -->
     <view class="forum-header border serif">{{detail.title}}</view>
@@ -43,7 +44,7 @@
           <view class="forum-user-aside">
             <image class="header" src="{{item.avatar||item.headerimg}}"></image>
             <view>
-              <view class="text"><text>{{item.name||item.nickname}}</text></view>
+              <view class="text"><text>{{item.name||item.nickname}}1111</text></view>
               <view class="text label">
                 <text>工种：{{workText[item.work]}}</text>
               </view>
@@ -68,7 +69,8 @@
                 <view>
                   <image class="header" src="{{replay.avatar||replay.headerimg}}"></image>
                   <text class="text">{{replay.name||replay.nickname}}</text>
-                  <text class="text" wx:if="{{replay.replayInfo}}" data-id="{{replay.replayInfo.userid}}">@{{replay.replayInfo.name}}</text>
+                  <text class="text" wx:if="{{replay.replayInfo}}"
+                    data-id="{{replay.replayInfo.userid}}">@{{replay.replayInfo.name}}</text>
                 </view>
                 <text class=" text label">{{replay.timestmp}}</text>
               </view>
@@ -83,8 +85,14 @@
                 data-name='{{replay.name||replay.nickName}}' bindtap="gotoDiscuss"></text>
             </view>
           </view>
+          <view class="text" style="text-align:center;padding:24rpx;color:{{item.isFinshed?'#888':''}}"
+            wx:if="{{item.replayNumber>5}}" bindtap='getMore' data-index="{{index}}">{{item.isFinshed ?'没有更多了':'更多回复'}}
+          </view>
         </view>
       </view>
+    </view>
+    <view class="is-loading is-finsh" wx:if="{{bottomLoading}}" style="padding-bottom:60rpx">
+      正在加载中... <text class="iconfont icon-zairu {{bottomLoading?'loading-ani':''}}"></text>
     </view>
   </view>
 </scroll-view>

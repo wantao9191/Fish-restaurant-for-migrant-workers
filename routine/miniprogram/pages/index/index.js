@@ -1,6 +1,5 @@
 //index.js
 const app = getApp()
-
 Page({
   data: {
     userInfo: {},
@@ -15,9 +14,7 @@ Page({
     userProfile: null,
     array: ['公家的', '私人的', '打你妹哦,劳资是资本家']
   },
-
   onLoad: function () {
-
     const user = wx.getStorageSync('userInfo') || {}
     if (user.avatar) {
       if (user.avatar.indexOf('https://') < 0) {
@@ -37,6 +34,15 @@ Page({
 
     }
 
+  },
+  onShow() {
+    this.data.userProfile = app.globalData.userProfile
+    this.setData({
+      userInfo: this.data.userProfile.userInfo,
+      'info.name': this.data.userProfile.userInfo.nickName,
+      'info.avatar': this.data.userProfile.userInfo.avatarUrl,
+      avatar: this.data.userProfile.userInfo.avatarUrl
+    })
   },
   // 信息认证
   submit() {
@@ -173,6 +179,4 @@ Page({
       }
     })
   },
-
-
 })

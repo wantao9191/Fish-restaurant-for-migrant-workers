@@ -104,12 +104,26 @@ Page({
     })
   },
   addForum(e) {
-    const {
-      type
-    } = e.currentTarget.dataset
-    wx.navigateTo({
-      url: '../forum/edit/index?type=' + type,
+    // 登陆权限判断
+    const jump = () => {
+      console.log(111111)
+      wx.navigateTo({
+        url: '../index/index',
+      })
+    }
+    app.utils.checkLogin(app, jump).then(() => {
+      const {
+        type
+      } = e.currentTarget.dataset
+      wx.navigateTo({
+        url: '../forum/edit/index?type=' + type,
+      })
+    }).catch(() => {
+      wx.navigateTo({
+        url: '../index/index',
+      })
     })
+
   },
   // 进入大厅
   intoView() {

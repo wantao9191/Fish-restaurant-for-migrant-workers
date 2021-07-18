@@ -49,6 +49,41 @@ const utils = {
       return unescape(r[2]);
     }
     return null;
+  },
+  checkLogin(app,done) {
+    return new Promise((resolve, rejcet) => {
+      if (wx.getStorageSync('userInfo')) {
+        resolve()
+      } else {
+        wx.getUserProfile({
+          desc: '展示用户信息', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
+          success: (res) => {
+            app.globalData.userProfile = res
+            wx.cloud.callFunction({
+              name: 'login',
+              data: res
+            }).then(resp => {
+              if (resp.result.code === 200) {
+                if (!resp.result.data) {
+                  console.log(1111111)
+                  app.globalData.user = {
+                    visible: true,
+                    userInfo: res.userInfo,
+                    'info.name': res.userInfo.nickName,
+                    'info.avatar': res.userInfo.avatarUrl,
+                    avatar: res.userInfo.avatarUrl
+                  }
+                  done&& done()
+                } else {
+                  wx.setStorageSync('userInfo', resp.result.data)
+                  rejcet()
+                }
+              }
+            })
+          }
+        })
+      }
+    })
   }
 }
 export default utils

@@ -44,7 +44,7 @@
           <view class="forum-user-aside">
             <image class="header" src="{{item.avatar||item.headerimg}}"></image>
             <view>
-              <view class="text"><text>{{item.name||item.nickname}}1111</text></view>
+              <view class="text"><text>{{item.name||item.nickname}}</text></view>
               <view class="text label">
                 <text>工种：{{workText[item.work]}}</text>
               </view>

@@ -26,6 +26,9 @@ const disscuss = {
         replayNumber:0
       }
     }).then(res => {
+      db.collection('forum').where({_id:id}).update({
+        data:{discussNum:_.inc(1)}
+      })
       return {
         code: 200,
         data: {

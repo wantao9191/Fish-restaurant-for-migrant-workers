@@ -1,2 +1,17 @@
 <!--miniprogram/pages/user/user.wxml-->
-<text>miniprogram/pages/user/user.wxml</text>
+<view class="user" id="main">
+  <view class="info">
+    <view class="info-item"><text>头像</text>
+      <view>
+        <image class="avatar" src="{{userInfo.avatar||userInfo.headimg}}"></image>
+      </view>
+    </view>
+    <view class="info-item"><text>姓名</text> {{userInfo.name||userInfo.nickName}}</view>
+    <view class="info-item"><text>工种</text> {{workText[userInfo.work]}}</view>
+    <view class="info-item"><text>手机</text>{{userInfo.mobile}}</view>
+  </view>
+  <view class="taps">
+    <view class="tap-label {{active==1 ? 'active' :''}}" data-type='1' bindtap="toggleTab">主题({{userInfo.forums}})</view>
+    <view class="tap-label {{active==2 ? 'active' :''}}" data-type='2' bindtap="toggleTab">回复({{userInfo.replays}})</view>
+  </view>
+</view>

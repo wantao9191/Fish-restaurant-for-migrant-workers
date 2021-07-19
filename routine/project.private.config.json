@@ -29,6 +29,12 @@
           "pathName": "pages/forum/detail/index",
           "query": "",
           "scene": null
+        },
+        {
+          "name": "pages/user/user",
+          "pathName": "pages/user/user",
+          "query": "id=undefined",
+          "scene": null
         }
       ]
     }

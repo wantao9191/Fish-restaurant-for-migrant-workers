@@ -1,1 +1,32 @@
 /* miniprogram/pages/user/user.wxss */
+.info {
+  padding: 24rpx;
+}
+
+.avatar {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+}
+
+.info-item>text {
+  margin-right: 24rpx;
+}
+.taps{
+  display: flex;
+  justify-content: center;
+  background: #fff;
+  padding: 24rpx;
+}
+.tap-label {
+  width: 160rpx;
+  text-align: center;
+}
+.tap-label.active {
+  color: #39A7D2;
+}

@@ -17,16 +17,40 @@
 .info-item>text {
   margin-right: 24rpx;
 }
-.taps{
+
+.taps {
   display: flex;
   justify-content: center;
   background: #fff;
   padding: 24rpx;
 }
+
 .tap-label {
   width: 160rpx;
   text-align: center;
 }
+
 .tap-label.active {
   color: #39A7D2;
+}
+
+.item {
+  background: #fff;
+  padding: 24rpx;
+  margin: 24rpx;
+}
+
+.desc {
+  display: flex;
+  justify-content: space-between;
+  font-size: 24rpx;
+  color: #666;
+  margin-top: 14rpx;
+}
+
+
+
+.iconfont {
+  font-size: 24rpx;
+  margin-right: 12rpx;
 }

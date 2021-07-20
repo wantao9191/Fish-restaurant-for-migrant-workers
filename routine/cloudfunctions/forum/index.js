@@ -100,7 +100,9 @@ const forum = {
   // 获取热门帖子
   async getHotList(event) {
     const {} = event
-    return await db.collection('forum').aggregate().match({status:1}).sort({
+    return await db.collection('forum').aggregate().match({
+      status: 1
+    }).sort({
       timestmp: -1,
       thumbsNum: -1,
       discussNum: -1
@@ -184,6 +186,32 @@ const forum = {
     //   console.log(res)
 
     // })
+  },
+  async getUserForum(event, oid) {
+    const {
+      pageNo,
+      pageSize,
+      openid
+    } = event
+    const totalResult = await db.collection('forum').where({
+      status: _.eq(openid || oid)
+    }).count()
+    const dataResult = await db.collection('forum').where({
+      openid: _.eq(openid || oid)
+    }).skip(pageNo - 1).limit(pageSize).get()
+    return await Promise.all([totalResult, dataResult]).then(([tr, dr]) => {
+      console.log(dr)
+      return {
+        code: 200,
+        message: '查询成功',
+        data: {
+          datas: dr.data,
+          pageNo,
+          pageSize,
+          total: tr.total,
+        }
+      }
+    })
   },
   // 获取用户
   async getUser(openid) {

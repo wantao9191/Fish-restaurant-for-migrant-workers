@@ -12,7 +12,15 @@ Page({
       2: '给私人打工',
       3: '可恶的资本家'
     },
-    active: 1
+    active: 1,
+    forumParams: {
+      pageNo: 1,
+      pageSize: 10
+    },
+    typeText: {
+      home: '大厅'
+    },
+    forums: []
   },
 
   /**
@@ -20,6 +28,7 @@ Page({
    */
   onLoad: function (options) {
     this.data.id = options.id || app.globalData.user._id
+    this.getUserForum()
   },
 
   /**
@@ -51,6 +60,34 @@ Page({
   toggleTab(e) {
     this.setData({
       active: e.target.dataset.type
+    })
+  },
+  getUserForum() {
+    wx.cloud.callFunction({
+      name: 'forum',
+      data: {
+        action: 'getUserForum',
+        ...this.data.forumParams,
+        opendid: this.data.id
+      }
+    }).then(res => {
+      if (res.result.code === 200) {
+        let forums = res.result.data.datas.map(d => {
+          d.timestmp = app.utils.formatTime(d.timestmp, 'yyyy-mm-dd', true)
+          return d
+        })
+        this.setData({
+          forums
+        })
+      }
+
+      console.log(res)
+    })
+  },
+  // 查看主题
+  gotoForum(e) {
+    wx.navigateTo({
+      url: '../forum/index/index?id=' + e.currentTarget.dataset.id,
     })
   },
   /**

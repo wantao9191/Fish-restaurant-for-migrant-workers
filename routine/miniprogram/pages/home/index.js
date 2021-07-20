@@ -106,7 +106,6 @@ Page({
   addForum(e) {
     // 登陆权限判断
     const jump = () => {
-      console.log(111111)
       wx.navigateTo({
         url: '../index/index',
       })

@@ -12,7 +12,8 @@ Page({
     },
     avatar: '',
     userProfile: null,
-    array: ['公家的', '私人的', '打你妹哦,劳资是资本家']
+    array: ['公家的', '私人的', '打你妹哦,劳资是资本家'],
+    clicked: false
   },
   onLoad: function () {
     const user = wx.getStorageSync('userInfo') || {}
@@ -46,6 +47,8 @@ Page({
   },
   // 信息认证
   submit() {
+    if (this.data.clicked) return
+    this.data.clicked = true
     let {
       nickName,
       avatarUrl
@@ -59,6 +62,7 @@ Page({
 
       }
     }).then(res => {
+      this.data.clicked = false
       if (res.result.code == 200) {
         if (res.result.data) {
           wx.setStorageSync('userInfo', res.result.data)
@@ -136,7 +140,7 @@ Page({
   // 进入主页
   goPage() {
     this.onDialogClose()
-    wx.navigateTo({
+    wx.redirectTo({
       url: '../home/index',
     })
   },

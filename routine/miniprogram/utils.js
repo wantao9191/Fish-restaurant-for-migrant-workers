@@ -50,7 +50,7 @@ const utils = {
     }
     return null;
   },
-  checkLogin(app,done) {
+  checkLogin(app, done) {
     return new Promise((resolve, rejcet) => {
       if (wx.getStorageSync('userInfo')) {
         resolve()
@@ -65,7 +65,6 @@ const utils = {
             }).then(resp => {
               if (resp.result.code === 200) {
                 if (!resp.result.data) {
-                  console.log(1111111)
                   app.globalData.user = {
                     visible: true,
                     userInfo: res.userInfo,
@@ -73,10 +72,10 @@ const utils = {
                     'info.avatar': res.userInfo.avatarUrl,
                     avatar: res.userInfo.avatarUrl
                   }
-                  done&& done()
+                  done && done()
                 } else {
                   wx.setStorageSync('userInfo', resp.result.data)
-                  rejcet()
+                  resolve()
                 }
               }
             })

@@ -7,6 +7,7 @@ Page({
    */
   data: {
     arrs: [],
+    clicked: false
   },
 
   /**
@@ -104,6 +105,11 @@ Page({
     })
   },
   addForum(e) {
+    if (this.data.clicked) return
+    this.data.clicked = true
+    setTimeout(() => {
+      this.data.clicked = false
+    }, 3000);
     // 登陆权限判断
     const jump = () => {
       wx.navigateTo({

@@ -29,6 +29,7 @@ Page({
   onLoad: function (options) {
     this.data.id = options.id || app.globalData.user._id
     this.getUserForum()
+    this.getUserRplay()
   },
 
   /**
@@ -81,6 +82,20 @@ Page({
         })
       }
 
+      console.log(res)
+    })
+  },
+  getUserRplay() {
+    console.log(this.data)
+    wx.cloud.callFunction({
+      name: 'replay',
+      data: {
+        action: 'get',
+        uid: this.data.id,
+        pageNo: 1,
+        pageSize: 10
+      }
+    }).then(res => {
       console.log(res)
     })
   },

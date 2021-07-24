@@ -48,6 +48,7 @@ const forum = {
       }
     })
   },
+  async update(event, openid){},
   // 删除帖子
   async del(event, openid) {
     return await db.collection('forum').doc(event.id).get().then(res => {
@@ -200,7 +201,6 @@ const forum = {
       openid: _.eq(openid || oid)
     }).skip(pageNo - 1).limit(pageSize).get()
     return await Promise.all([totalResult, dataResult]).then(([tr, dr]) => {
-      console.log(dr)
       return {
         code: 200,
         message: '查询成功',

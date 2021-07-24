@@ -1,4 +1,5 @@
 {
   "usingComponents": {},
-  "navigationBarTitleText": "用户信息"
+  "navigationBarTitleText": "用户信息",
+  "disableScroll": true
 }

@@ -33,7 +33,7 @@
         {
           "name": "pages/user/user",
           "pathName": "pages/user/user",
-          "query": "id=undefined",
+          "query": "id=",
           "scene": null
         }
       ]

@@ -13,17 +13,21 @@
   <view class="taps">
     <view class="tap-label {{active==1 ? 'active' :''}}" data-type='1' bindtap="toggleTab">主题({{userInfo.forums}})
     </view>
-    <view class="tap-label {{active==2 ? 'active' :''}}" data-type='2' bindtap="toggleTab">回复({{userInfo.replays}})
-    </view>
+    <!-- <view class="tap-label {{active==2 ? 'active' :''}}" data-type='2' bindtap="toggleTab">回复({{userInfo.replays}})
+    </view> -->
   </view>
-  <view class="tab-content" wx:if='{{active==1}}'>
-    <view class="item" wx:for="{{forums}}" wx:key='_id' data-id="{{item._id}}" bindtap="gotoForum">
-      <view class="title"><text>[{{typeText[item.type]}}]</text>{{item.title}}</view>
-      <view class="desc">
-        <text class="desc-text">{{userInfo.name||userInfo.nickName}}</text>
-        <view class="desc-text"><text class="iconfont icon-liaotian"> {{item.discussNum}}</text> <text class="iconfont icon-rili-yizhou">
+  <scroll-view scroll-y style="height:calc(100vh - 360rpx)">
+    <view class="tab-content" wx:if='{{active==1}}'>
+      <view class="item" wx:for="{{forums}}" wx:key='_id' data-id="{{item._id}}" bindtap="gotoForum">
+        <view class="title"><text>[{{typeText[item.type]}}]</text>{{item.title}}</view>
+        <view class="desc">
+          <text class="desc-text">{{userInfo.name||userInfo.nickName}}</text>
+          <view class="desc-text"><text class="iconfont icon-liaotian"> {{item.discussNum}}</text> <text
+              class="iconfont icon-rili-yizhou">
             </text>{{item.timestmp}} </view>
+        </view>
       </view>
     </view>
-  </view>
+  </scroll-view>
+
 </view>

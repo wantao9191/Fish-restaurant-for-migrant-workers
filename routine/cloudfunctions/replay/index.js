@@ -27,6 +27,7 @@ const replay = {
         headimg,
         _id
       } = userInfo
+      db.collection('user')
       return db.collection('replay').add({
         data: {
           forum_id: id,
@@ -42,6 +43,7 @@ const replay = {
             headimg,
             id: _id
           },
+          uid: user._id,
           replayInfo
         }
       }).then(res => {
@@ -51,7 +53,13 @@ const replay = {
           data: {
             replayNumber: _.inc(1)
           }
-
+        })
+        db.collection('user').where({
+          openid
+        }).update({
+          data: {
+            replays: _.inc(1)
+          }
         })
         return {
           code: 200,
@@ -68,15 +76,20 @@ const replay = {
       pageSize,
       pageNo,
       id,
-      sortByTime
+      sortByTime,
+      uid
     } = event
+    let rules = {
+      replayId: _.eq(id)
+    }
+    if (uid) {
+      rules = {
+        openid: uid
+      }
+    }
     let sortType = sortByTime || -1
-    const totalResult = await db.collection('replay').where({
-      replayId: _.eq(id)
-    }).count()
-    let dataResult = await db.collection('replay').aggregate().match({
-      replayId: _.eq(id)
-    }).sort({
+    const totalResult = await db.collection('replay').where(rules).count()
+    let dataResult = await db.collection('replay').aggregate().match(rules).sort({
       timestmp: sortType
     })
     dataResult = dataResult.skip(pageNo).limit(pageSize)
@@ -109,8 +122,7 @@ const replay = {
           datas: dr.list,
           total: tr.total,
           pageNo,
-          pageSize,
-          sortType
+          pageSize
         },
         message: '查询成功'
       }

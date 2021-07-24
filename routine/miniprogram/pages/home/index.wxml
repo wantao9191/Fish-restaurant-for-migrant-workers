@@ -22,9 +22,9 @@
         <view class="footer-text">我有话说，掌柜上些酒菜</view>
       </view>
     </view>
-    <view class="main-item">
+    <!-- <view class="main-item">
       <view class="item-header serif">游戏</view>
       <view class="item-main">无论生活的重担怎样压迫你，闲暇之余来盘游戏总是极好的。</view>
-    </view>
+    </view> -->
   </view>
 </scroll-view>

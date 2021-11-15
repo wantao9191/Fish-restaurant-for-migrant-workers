@@ -3,5 +3,6 @@
     "talk-item": "/components/talk-item"
   },
   "navigationBarTitleText": "酒馆大厅",
-  "disableScroll": true
+  "disableScroll": true,
+  "enablePullDownRefresh": false
 }

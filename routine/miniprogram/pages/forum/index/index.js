@@ -386,7 +386,7 @@ Page({
   checkUser(e){
     let {userid} = e.target.dataset
     wx.navigateTo({
-      url: '../../user/user?id='+userid,
+      url: '../../user/index/user?id='+userid,
     })
   },
   /**

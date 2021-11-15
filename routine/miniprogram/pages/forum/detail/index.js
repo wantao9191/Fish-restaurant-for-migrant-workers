@@ -105,7 +105,10 @@ Page({
     })
     if (fileList.length) {
       // 全局获取云文件方法
-      app.utils.getCloudFile({arrs, fileList}).then(() => {
+      app.utils.getCloudFile({
+        arrs,
+        fileList
+      }).then(() => {
         this.setData({
           arrs: this.data.arrs
         })
@@ -132,7 +135,7 @@ Page({
     if (this.moving) {
       const touches = e.touches[0]
       const delay = touches.pageY - this.moveStart
-      if(delay<0)return
+      if (delay < 0) return
       this.setData({
         transY: (delay) / 5
       })

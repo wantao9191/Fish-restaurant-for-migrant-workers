@@ -15,9 +15,9 @@ const utils = {
       }
     }
 
-    const y = date.getFullYear()
-    const m = date.getMonth() + 1
-    const d = date.getDate()
+    const y = new Date(time).getFullYear()
+    const m = new Date(time).getMonth() + 1
+    const d = new Date(time).getDate()
     return `${y}-${m}-${d}`
   },
   async getCloudFile({

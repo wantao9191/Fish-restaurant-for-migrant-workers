@@ -1,0 +1,19 @@
+{
+  "name": "manage-pc",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@cloudbase/js-sdk": "^1.6.0",
+    "element-plus": "^1.1.0-beta.9",
+    "vue": "^3.2.4",
+    "vue-router": "^4.0.10"
+  },
+  "devDependencies": {
+    "@vue/compiler-sfc": "^3.0.0-rc.1",
+    "vite": "^1.0.0-rc.1",
+    "sass": "^1.26.10"
+  }
+}

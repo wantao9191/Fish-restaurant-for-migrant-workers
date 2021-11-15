@@ -6,7 +6,8 @@
     "pages/forum/detail/index",
     "pages/forum/index/index",
     "pages/forum/discuss/index",
-    "pages/user/user"
+    "pages/user/index/user",
+    "pages/user/login/login"
   ],
   "usingComponents": {
     "wt-button": "./libs/button",

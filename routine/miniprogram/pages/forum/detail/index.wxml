@@ -1,6 +1,6 @@
 <!--miniprogram/pages/forum/detail/index.wxml-->
 <scroll-view scroll-y class="tavern-detail" id="main" bindscrolltoupper='scrolltoupper'
-  bindscrolltolower='scrolltolower' bindscroll='scroll'>
+  bindscrolltolower='scrolltolower' bindscroll='scroll' refresher-enabled>
   <view class="tavern-detail-header">
     <view class="tavern-detail-header-wrap">
       <view class="aside">
@@ -12,8 +12,9 @@
   <view class="is-loading is-finsh" hidden="{{transY<=0}}">
     {{loadText}} <text class="iconfont icon-zairu {{loading?'loading-ani':''}}"></text>
   </view>
-  <view class="tavern-detail-main" style="transform:translateY({{transY}}px)" bindtouchstart="touchstart"
-    bindtouchend="touchend" bindtouchmove="touchmove">
+  <!-- bindtouchstart="touchstart" -->
+    <!-- bindtouchend="touchend" bindtouchmove="touchmove" -->
+  <view class="tavern-detail-main" style="transform:translateY({{transY}}px)">
     <talk-item arrs='{{arrs}}' inline bind:itemClick='checkDetail'>
     </talk-item>
     <view class="is-finsh" wx:if="{{isFinshed}}">没有更多了</view>

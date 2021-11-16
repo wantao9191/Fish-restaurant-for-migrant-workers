@@ -19,6 +19,6 @@ export default {
             .set("views", resolve("src/views")).
             set("assets", resolve("src/assets")).
             set("components", resolve("src/components")).
-            set("api", resolve("src/api")).set("store", resolve("src/store")).set('assets', resolve('src/assets'))
+            set("api", resolve("src/api")).set("store", resolve("src/store"))
     }
 }

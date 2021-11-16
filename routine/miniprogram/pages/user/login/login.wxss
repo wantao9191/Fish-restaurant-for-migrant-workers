@@ -1,1 +1,15 @@
 /* miniprogram/pages/user/login/login.wxss */
+.content {
+  height: 100vh;
+  padding: 24vh 0;
+  text-align: center;
+}
+
+.title {
+  font-size: 26rpx;
+  color: #888;
+  margin: 1vh 0 4vh;
+}
+.btn {
+  margin-bottom: 1vh;
+}

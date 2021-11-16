@@ -19,7 +19,6 @@ const db = cloud.database({
  */
 exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext()
-  console.log(wxContext)
   return await db.collection('user').where({
     openid: wxContext.OPENID
   }).get().then(res => {

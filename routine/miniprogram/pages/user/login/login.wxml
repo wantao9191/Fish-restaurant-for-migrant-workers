@@ -1,2 +1,11 @@
 <!--miniprogram/pages/user/login/login.wxml-->
-<text>miniprogram/pages/user/login/login.wxml</text>
+<view class="content">
+  <image mode="widthFix" style="width:180rpx" src="../../../assets/images/basicprofile.png"></image>
+  <view class="title">打工人爱摸鱼网页版登陆</view>
+  <view class="btn">
+    <wt-button theme='primary' bind:tap='goPage'>确定</wt-button>
+  </view>
+  <view class="btn">
+    <wt-button bind:tap='cancel'>取消</wt-button>
+  </view>
+</view>
